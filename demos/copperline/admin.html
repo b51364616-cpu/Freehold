@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website editor — Copperline Electrical</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Public+Sans:wght@300..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#101A33;--ink-2:#1B2A4E;--paper:#F5F7F9;--white:#FFF;
+  --copper:#B86B3C;--copper-pale:#F3E5DA;--cobalt:#2B5FD9;
+  --slate:#5D6B82;--slate-lt:#8695A8;--line:rgba(16,26,51,.14);
+  --go:#1E9E6A;--warn:#C6362C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Public Sans',system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2{font-family:'Instrument Serif',Georgia,serif;font-weight:400;line-height:1.05;margin:0}
+h3{font-size:1rem;font-weight:650;margin:0}
+:focus-visible{outline:2.5px solid var(--cobalt);outline-offset:2px}
+
+#gate{position:fixed;inset:0;background:var(--ink);display:grid;place-items:center;z-index:50;padding:1.5rem}
+#gate .box{width:100%;max-width:350px;text-align:center}
+#gate h1{color:#fff;font-size:2rem;margin-bottom:.3rem}
+#gate p{color:var(--slate-lt);font-size:.9rem;margin:0 0 1.5rem}
+#gate input{width:100%;padding:.9rem;background:var(--ink-2);border:1px solid rgba(245,247,249,.2);color:#fff;font-family:inherit;font-size:1rem;text-align:center;letter-spacing:.15em;border-radius:3px}
+#gate input:focus{border-color:var(--copper);outline:none}
+#gate .err{color:#FF9A92;font-size:.85rem;margin-top:.75rem;min-height:1.2em}
+.bolt{width:40px;height:40px;margin-bottom:1rem}
+.bolt path{fill:var(--copper)}
+.bolt rect{fill:none;stroke:#8695A8;stroke-width:1.5}
+
+header{position:sticky;top:0;z-index:20;background:var(--ink);color:var(--paper);border-bottom:2px solid var(--copper)}
+.bar{max-width:1500px;margin:0 auto;padding:.8rem 1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.bar h1{color:#fff;margin-right:auto;font-size:1.25rem}
+.bar h1 small{display:block;font-family:'Public Sans',sans-serif;font-size:.66rem;letter-spacing:.15em;color:var(--slate-lt);text-transform:uppercase;font-weight:600;margin-top:.15rem}
+.saved{font-size:.8rem;color:var(--slate-lt);min-width:8rem;text-align:right}
+.saved.ok{color:#5FD3A2}
+
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.62rem 1.1rem;border:none;cursor:pointer;font-family:inherit;font-size:.87rem;font-weight:600;background:var(--copper);color:#fff;text-decoration:none;border-radius:3px;transition:filter .15s,transform .15s}
+.btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1.5px rgba(245,247,249,.3)}
+.btn.ghost:hover{background:rgba(245,247,249,.1)}
+.btn.dark{background:var(--ink);color:var(--paper)}
+.btn.sm{padding:.38rem .68rem;font-size:.78rem}
+.btn.danger{background:transparent;color:var(--warn);box-shadow:inset 0 0 0 1.5px rgba(198,54,44,.35)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.tabs{background:var(--ink-2);overflow-x:auto}
+.tabs-in{max-width:1500px;margin:0 auto;display:flex;padding:0 1.25rem}
+.tab{background:none;border:none;cursor:pointer;font-family:inherit;font-size:.86rem;color:var(--slate-lt);padding:.85rem 1rem;white-space:nowrap;border-bottom:3px solid transparent;font-weight:600}
+.tab:hover{color:#fff}
+.tab.on{color:var(--copper);border-bottom-color:var(--copper)}
+
+main{max-width:1500px;margin:0 auto;padding:1.5rem 1.25rem 5.5rem;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:1.75rem;align-items:start}
+@media (max-width:1150px){main{grid-template-columns:1fr}.preview{display:none}}
+
+.panel{display:none}
+.panel.on{display:block}
+.hint{background:var(--white);border-left:3px solid var(--copper);padding:.85rem 1.1rem;font-size:.88rem;color:var(--slate);margin-bottom:1.25rem}
+.hint b{color:var(--ink)}
+.hint code{background:var(--copper-pale);padding:.1rem .3rem;border-radius:2px;font-size:.86em}
+
+.item{background:var(--white);border:1px solid var(--line);padding:1.15rem;margin-bottom:.85rem;border-radius:3px}
+.item-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem}
+.item-head .n{width:24px;height:24px;display:grid;place-items:center;background:var(--ink);color:var(--copper);font-size:.74rem;font-weight:700;flex:none;border-radius:2px}
+.item-head h3{margin-right:auto}
+.sub{background:var(--paper);border:1px solid var(--line);padding:1rem;margin-bottom:.6rem;border-radius:3px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem}
+@media (max-width:700px){.grid2,.grid3{grid-template-columns:1fr}}
+
+label{display:block;font-size:.74rem;color:var(--slate);margin-bottom:.25rem;font-weight:650}
+input[type=text],input[type=tel],input[type=email],input[type=url],input[type=time],select,textarea{
+  width:100%;padding:.55rem .65rem;border:1px solid var(--line);background:var(--white);
+  font-family:inherit;font-size:.92rem;color:var(--ink);border-radius:3px;
+}
+.sub input,.sub textarea,.sub select{background:var(--white)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 3px rgba(43,95,217,.12)}
+textarea{resize:vertical;min-height:72px;line-height:1.5}
+.fld{margin-bottom:.75rem}
+.chk{display:flex;align-items:center;gap:.5rem;font-size:.88rem;margin-top:1.4rem}
+.chk input{width:17px;height:17px;accent-color:var(--copper)}
+
+.listrow{display:flex;gap:.5rem;margin-bottom:.4rem;align-items:center}
+.listrow input{flex:1}
+.addrow{display:flex;gap:.5rem;margin-top:.6rem}
+.addrow input{flex:1}
+.hoursrow{display:grid;grid-template-columns:110px 1fr 1fr 95px;gap:.6rem;align-items:end;margin-bottom:.5rem}
+@media (max-width:700px){.hoursrow{grid-template-columns:1fr 1fr}}
+
+.preview{position:sticky;top:130px}
+.prevbar{display:flex;gap:.5rem;margin-bottom:.6rem;align-items:center}
+.prevbar span{font-size:.78rem;color:var(--slate);margin-right:auto}
+.phone{border:10px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--ink);box-shadow:0 20px 50px rgba(16,26,51,.18)}
+.phone iframe{width:100%;height:620px;border:none;display:block;background:var(--paper)}
+
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--ink);border-top:2px solid var(--copper);padding:.75rem 1.25rem}
+.savebar-in{max-width:1500px;margin:0 auto;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.savebar .msg{color:var(--slate-lt);font-size:.83rem;margin-right:auto}
+.savebar .msg b{color:var(--copper)}
+
+.modal{position:fixed;inset:0;background:rgba(16,26,51,.7);display:none;place-items:center;z-index:60;padding:1.25rem}
+.modal.on{display:grid}
+.modal-box{background:var(--paper);max-width:520px;width:100%;padding:1.75rem;border-radius:3px}
+.modal-box h2{font-size:1.5rem;margin-bottom:.5rem}
+.modal-box p{font-size:.9rem;color:var(--slate);margin:0 0 1rem}
+.modal-actions{display:flex;gap:.6rem;margin-top:1.25rem;flex-wrap:wrap}
+.ok{color:var(--go);font-weight:650}
+.bad{color:var(--warn);font-weight:650}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <svg class="bolt" viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="3"/><path d="M13.4 5.2 8.1 13h3.2l-1 5.9L15.9 11h-3.4z"/></svg>
+    <h1>Website editor</h1>
+    <p>Enter your passcode</p>
+    <input id="pass" type="password" inputmode="numeric" placeholder="••••" autocomplete="off">
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<header>
+  <div class="bar">
+    <h1>Copperline Electrical<small>Website editor</small></h1>
+    <span class="saved" id="savedMsg"></span>
+    <a class="btn ghost sm" href="index.html" target="_blank">View site</a>
+  </div>
+</header>
+
+<div class="tabs"><div class="tabs-in" id="tabs"></div></div>
+
+<main>
+  <div>
+    <section class="panel on" data-panel="details">
+      <div class="hint"><b>Phone, address, licence and hours.</b> Changing the hours here also changes the "office open" indicator at the top of the website.</div>
+      <div class="item">
+        <div class="item-head"><h3>Business details</h3></div>
+        <div class="grid2">
+          <div class="fld"><label>Business name</label><input type="text" data-path="business.name"></div>
+          <div class="fld"><label>Short name</label><input type="text" data-path="business.shortName"></div>
+          <div class="fld"><label>Suburb line</label><input type="text" data-path="business.suburb"></div>
+          <div class="fld"><label>Year established</label><input type="text" data-path="business.established"></div>
+          <div class="fld"><label>Phone (as displayed)</label><input type="text" data-path="business.phone"></div>
+          <div class="fld"><label>Phone (dial format)</label><input type="tel" data-path="business.phoneLink"></div>
+          <div class="fld"><label>Email</label><input type="email" data-path="business.email"></div>
+          <div class="fld"><label>Google Maps link</label><input type="url" data-path="business.mapUrl"></div>
+          <div class="fld"><label>Address line 1</label><input type="text" data-path="business.addressLine1"></div>
+          <div class="fld"><label>Address line 2</label><input type="text" data-path="business.addressLine2"></div>
+          <div class="fld"><label>Finding us</label><input type="text" data-path="business.directions"></div>
+          <div class="fld"><label>Electrical contractor licence</label><input type="text" data-path="business.licence"></div>
+          <div class="fld"><label>ABN</label><input type="text" data-path="business.abn"></div>
+          <div class="fld"><label>Membership line</label><input type="text" data-path="business.membership"></div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Office hours</h3></div>
+        <div id="hoursEditor"></div>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Emergency and availability</h3></div>
+        <div class="fld"><label>Emergency box wording</label><textarea data-path="availability.emergencyNote"></textarea></div>
+        <div class="fld"><label>Response time line</label><input type="text" data-path="availability.responseTime"></div>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Areas you cover</h3></div>
+        <div id="suburbsEditor"></div>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Credential badges</h3></div>
+        <div id="credsEditor"></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="hero">
+      <div class="hint">The first thing anyone reads. The <b>highlighted phrase</b> gets the copper flicker effect on the live site — it must appear word-for-word inside the headline or the effect won't show.</div>
+      <div class="item">
+        <div class="fld"><label>Headline</label><textarea data-path="hero.headline"></textarea></div>
+        <div class="fld"><label>Highlighted phrase within the headline</label><input type="text" data-path="hero.flickerWord"></div>
+        <div class="fld"><label>Opening paragraph</label><textarea data-path="hero.lede"></textarea></div>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>The four numbers</h3></div>
+        <div id="statsEditor"></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="services">
+      <div class="hint">Services are grouped into the tabs shown on the site. Each group has its own list of jobs underneath it.</div>
+      <div id="catEditor"></div>
+      <button class="btn dark" id="addCat">Add a service group</button>
+    </section>
+
+    <section class="panel" data-panel="rates">
+      <div class="hint">Your published rate card and the fixed-price list beside it. Prices show exactly as typed, so include the dollar sign.</div>
+      <div class="item">
+        <div class="item-head"><h3>Rate card</h3></div>
+        <div id="ratesEditor"></div>
+        <button class="btn dark sm" id="addRate">Add a rate</button>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Fixed price jobs</h3></div>
+        <div id="fixedEditor"></div>
+        <button class="btn dark sm" id="addFixed">Add a job</button>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="team">
+      <div class="hint">Initials show on the card by default. Photos look far better — send them over and they'll be swapped in.</div>
+      <div id="teamEditor"></div>
+      <button class="btn dark" id="addPerson">Add a person</button>
+    </section>
+
+    <section class="panel" data-panel="reviews">
+      <div class="hint">These rotate automatically on the site. Only use reviews people actually left you, copied word for word.</div>
+      <div id="reviewsEditor"></div>
+      <button class="btn dark" id="addReview">Add a review</button>
+    </section>
+
+    <section class="panel" data-panel="faq">
+      <div class="hint">Every question answered here is one less phone call. Add the ones you find yourself repeating.</div>
+      <div id="faqEditor"></div>
+      <button class="btn dark" id="addFaq">Add a question</button>
+    </section>
+
+    <section class="panel" data-panel="publish">
+      <div class="hint">Everything above saves on this device as you type. Publishing puts it on the live website.</div>
+      <div class="item">
+        <div class="item-head"><h3>Publish to the live site</h3></div>
+        <p style="font-size:.9rem;color:var(--slate)">When you're happy with your changes, hit the button. It's usually live within about a minute.</p>
+        <div class="modal-actions"><button class="btn" id="doPublish">Publish now</button></div>
+        <p id="pubStatus" style="font-size:.87rem;margin-top:.9rem"></p>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Or send the file to your web person</h3></div>
+        <p style="font-size:.9rem;color:var(--slate)">Download the content file and email it over — they'll upload it for you.</p>
+        <div class="modal-actions">
+          <button class="btn dark" id="download">Download content.json</button>
+          <button class="btn dark" id="copyJson">Copy to clipboard</button>
+          <button class="btn danger" id="reset">Undo all my changes</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="preview">
+    <div class="prevbar"><span>Live preview</span><button class="btn dark sm" id="refreshPrev">Refresh</button></div>
+    <div class="phone"><iframe id="prev" title="Site preview" src="index.html"></iframe></div>
+  </aside>
+</main>
+
+<div class="savebar">
+  <div class="savebar-in">
+    <span class="msg" id="saveMsg">Changes save automatically on this device. Go to <b>Publish</b> to put them live.</span>
+    <button class="btn ghost" id="previewBtn">Open site</button>
+    <button class="btn" id="jumpPublish">Publish changes</button>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box" id="modalBox"></div></div>
+
+<script>
+(function(){
+'use strict';
+
+/* Stops a customer wandering in. Not real security — anyone can read this
+   file. Protect /admin at the host (Netlify password protection or
+   Cloudflare Access) for anything that actually matters. */
+var PASSCODE = '4171';
+
+var STORE='copperline-content';
+var data=null, original=null;
+
+function $(s,r){ return (r||document).querySelector(s); }
+function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function esc(t){ var d=document.createElement('div'); d.textContent=t==null?'':String(t); return d.innerHTML; }
+function dig(o,p){ return p.split('.').reduce(function(a,k){ return a&&a[k]; }, o); }
+function put(o,p,v){ var ks=p.split('.'), last=ks.pop(); ks.reduce(function(a,k){ return a[k]=a[k]||{}; },o)[last]=v; }
+
+/* gate */
+var gate=$('#gate'), pass=$('#pass');
+if(sessionStorage.getItem('copperline-auth')==='1') gate.style.display='none';
+else setTimeout(function(){ pass.focus(); },200);
+pass.addEventListener('keydown', function(e){
+  if(e.key!=='Enter') return;
+  if(pass.value===PASSCODE){ sessionStorage.setItem('copperline-auth','1'); gate.style.display='none'; }
+  else { $('#gateErr').textContent='Not that one. Try again.'; pass.value=''; pass.focus(); }
+});
+
+/* load */
+function boot(){
+  fetch('content.json',{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():Promise.reject(); })
+    .then(function(j){ original=JSON.parse(JSON.stringify(j)); start(j); })
+    .catch(function(){
+      var local=null; try{ local=JSON.parse(localStorage.getItem(STORE)); }catch(e){}
+      if(local){ original=JSON.parse(JSON.stringify(local)); start(local); }
+      else $('main').innerHTML='<div class="hint" style="border-color:var(--warn)"><b>Can\u2019t read content.json.</b> Open this page through a web address rather than by double-clicking the file. On your own machine, run <code>python3 -m http.server</code> in this folder and visit <code>localhost:8000/admin.html</code>.</div>';
+    });
+}
+function start(j){
+  var local=null; try{ local=JSON.parse(localStorage.getItem(STORE)); }catch(e){}
+  data = local && local.business ? local : j;
+  buildTabs(); bindFields(); renderAll();
+}
+
+/* tabs */
+var TABS=[['details','Details & hours'],['hero','Front page'],['services','Services'],
+          ['rates','Rates & prices'],['team','Team'],['reviews','Reviews'],
+          ['faq','Questions'],['publish','Publish']];
+function buildTabs(){
+  $('#tabs').innerHTML=TABS.map(function(t,i){
+    return '<button class="tab'+(i===0?' on':'')+'" data-tab="'+t[0]+'">'+esc(t[1])+'</button>';
+  }).join('');
+  $$('.tab').forEach(function(b){
+    b.addEventListener('click', function(){
+      $$('.tab').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      $$('.panel').forEach(function(p){ p.classList.toggle('on', p.dataset.panel===b.dataset.tab); });
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+}
+function goTab(n){ var b=$('.tab[data-tab="'+n+'"]'); if(b) b.click(); }
+
+/* save */
+var t=null;
+function save(){
+  localStorage.setItem(STORE, JSON.stringify(data));
+  var m=$('#savedMsg'); m.textContent='Saved'; m.classList.add('ok');
+  clearTimeout(t); t=setTimeout(function(){ m.textContent=''; m.classList.remove('ok'); refreshPrev(); },700);
+}
+function refreshPrev(){ var f=$('#prev'); if(f) f.contentWindow.location.reload(); }
+$('#refreshPrev').addEventListener('click', refreshPrev);
+$('#previewBtn').addEventListener('click', function(){ window.open('index.html','_blank'); });
+$('#jumpPublish').addEventListener('click', function(){ goTab('publish'); });
+
+/* bound fields */
+function bindFields(){
+  $$('[data-path]').forEach(function(el){
+    var v=dig(data, el.dataset.path);
+    if(v!=null) el.value=v;
+    el.addEventListener('input', function(){ put(data, el.dataset.path, el.value); save(); });
+  });
+}
+
+/* helpers */
+function field(label,val,oninput,type){
+  var w=document.createElement('div'); w.className='fld';
+  w.innerHTML='<label>'+esc(label)+'</label>';
+  var i=document.createElement(type==='area'?'textarea':'input');
+  if(type&&type!=='area') i.type=type;
+  i.value=val==null?'':val;
+  i.addEventListener('input', function(){ oninput(i.value); save(); });
+  w.appendChild(i); return w;
+}
+function shell(title,n,onDel,cls){
+  var d=document.createElement('div'); d.className=cls||'item';
+  var h=document.createElement('div'); h.className='item-head';
+  h.innerHTML=(n!=null?'<span class="n">'+esc(n)+'</span>':'')+'<h3>'+esc(title)+'</h3>';
+  if(onDel){
+    var b=document.createElement('button'); b.className='btn danger sm'; b.textContent='Remove';
+    b.addEventListener('click', onDel); h.appendChild(b);
+  }
+  d.appendChild(h); return d;
+}
+function stringList(host,arr,ph,redo){
+  host.innerHTML='';
+  arr.forEach(function(v,i){
+    var row=document.createElement('div'); row.className='listrow';
+    var inp=document.createElement('input'); inp.type='text'; inp.value=v;
+    inp.addEventListener('input', function(){ arr[i]=inp.value; save(); });
+    var del=document.createElement('button'); del.className='btn danger sm'; del.textContent='×';
+    del.addEventListener('click', function(){ arr.splice(i,1); redo(); save(); });
+    row.appendChild(inp); row.appendChild(del); host.appendChild(row);
+  });
+  var add=document.createElement('div'); add.className='addrow';
+  var ni=document.createElement('input'); ni.type='text'; ni.placeholder=ph;
+  var nb=document.createElement('button'); nb.className='btn dark sm'; nb.textContent='Add';
+  function commit(){ if(!ni.value.trim()) return; arr.push(ni.value.trim()); redo(); save(); }
+  nb.addEventListener('click', commit);
+  ni.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); commit(); } });
+  add.appendChild(ni); add.appendChild(nb); host.appendChild(add);
+}
+
+/* hours */
+function renderHours(){
+  var c=$('#hoursEditor'); c.innerHTML='';
+  data.hours.forEach(function(h){
+    var row=document.createElement('div'); row.className='hoursrow';
+    row.innerHTML='<div style="font-weight:650;padding-bottom:.55rem">'+esc(h.day)+'</div>';
+    var o=field('Opens',h.open,function(v){ h.open=v; },'time');
+    var cl=field('Closes',h.close,function(v){ h.close=v; },'time');
+    row.appendChild(o); row.appendChild(cl);
+    var ck=document.createElement('label'); ck.className='chk'; ck.style.marginTop='0'; ck.style.paddingBottom='.55rem';
+    var cb=document.createElement('input'); cb.type='checkbox'; cb.checked=!!h.closed;
+    cb.addEventListener('change', function(){
+      h.closed=cb.checked;
+      o.querySelector('input').disabled=cb.checked;
+      cl.querySelector('input').disabled=cb.checked;
+      save();
+    });
+    o.querySelector('input').disabled=!!h.closed;
+    cl.querySelector('input').disabled=!!h.closed;
+    ck.appendChild(cb); ck.appendChild(document.createTextNode('Closed'));
+    row.appendChild(ck); c.appendChild(row);
+  });
+}
+
+/* stats */
+function renderStats(){
+  var c=$('#statsEditor'); c.innerHTML='';
+  data.hero.stats.forEach(function(s){
+    var d=document.createElement('div'); d.className='grid3';
+    d.appendChild(field('Number',s.value,function(v){ s.value=v; }));
+    d.appendChild(field('After it (e.g. " yr")',s.suffix||'',function(v){ s.suffix=v; }));
+    d.appendChild(field('Caption',s.label,function(v){ s.label=v; }));
+    c.appendChild(d);
+  });
+}
+
+/* service categories (nested) */
+function renderCats(){
+  var c=$('#catEditor'); c.innerHTML='';
+  data.categories.forEach(function(cat,ci){
+    var d=shell(cat.name||'Untitled group', ci+1, data.categories.length>1?function(){
+      data.categories.splice(ci,1); renderCats(); save();
+    }:null);
+    d.appendChild(field('Tab name',cat.name,function(v){ cat.name=v; }));
+    d.appendChild(field('Group description',cat.blurb,function(v){ cat.blurb=v; },'area'));
+
+    var lab=document.createElement('label'); lab.textContent='Jobs in this group'; lab.style.marginTop='.6rem';
+    d.appendChild(lab);
+
+    cat.items.forEach(function(it,ii){
+      var s=shell(it.title||'Untitled', ii+1, function(){ cat.items.splice(ii,1); renderCats(); save(); }, 'sub');
+      s.appendChild(field('Name',it.title,function(v){ it.title=v; }));
+      s.appendChild(field('Description',it.blurb,function(v){ it.blurb=v; },'area'));
+      var g=document.createElement('div'); g.className='grid2';
+      g.appendChild(field('Price',it.price,function(v){ it.price=v; }));
+      g.appendChild(field('Under the price',it.priceNote,function(v){ it.priceNote=v; }));
+      s.appendChild(g);
+      d.appendChild(s);
+    });
+
+    var add=document.createElement('button'); add.className='btn dark sm'; add.textContent='Add a job to this group';
+    add.addEventListener('click', function(){
+      cat.items.push({title:'New job',blurb:'',price:'Quoted',priceNote:''});
+      renderCats(); save();
+    });
+    d.appendChild(add);
+    c.appendChild(d);
+  });
+}
+$('#addCat').addEventListener('click', function(){
+  data.categories.push({name:'New group',blurb:'',items:[]}); renderCats(); save();
+});
+
+/* rates + fixed */
+function renderRates(){
+  var c=$('#ratesEditor'); c.innerHTML='';
+  data.rates.forEach(function(r,i){
+    var s=shell(r.label||'Rate', i+1, function(){ data.rates.splice(i,1); renderRates(); save(); }, 'sub');
+    var g=document.createElement('div'); g.className='grid2';
+    g.appendChild(field('Label',r.label,function(v){ r.label=v; }));
+    g.appendChild(field('Amount',r.amount,function(v){ r.amount=v; }));
+    s.appendChild(g);
+    s.appendChild(field('Explanation',r.note,function(v){ r.note=v; },'area'));
+    c.appendChild(s);
+  });
+}
+$('#addRate').addEventListener('click', function(){
+  data.rates.push({label:'New rate',amount:'$0',note:''}); renderRates(); save();
+});
+function renderFixed(){
+  var c=$('#fixedEditor'); c.innerHTML='';
+  data.fixedPrices.forEach(function(f,i){
+    var row=document.createElement('div'); row.className='listrow';
+    var a=document.createElement('input'); a.type='text'; a.value=f.job; a.placeholder='Job';
+    a.addEventListener('input', function(){ f.job=a.value; save(); });
+    var b=document.createElement('input'); b.type='text'; b.value=f.price; b.style.maxWidth='110px';
+    b.addEventListener('input', function(){ f.price=b.value; save(); });
+    var del=document.createElement('button'); del.className='btn danger sm'; del.textContent='×';
+    del.addEventListener('click', function(){ data.fixedPrices.splice(i,1); renderFixed(); save(); });
+    row.appendChild(a); row.appendChild(b); row.appendChild(del); c.appendChild(row);
+  });
+}
+$('#addFixed').addEventListener('click', function(){
+  data.fixedPrices.push({job:'',price:'$0'}); renderFixed(); save();
+});
+
+/* team */
+function renderTeam(){
+  var c=$('#teamEditor'); c.innerHTML='';
+  data.team.forEach(function(p,i){
+    var d=shell(p.name||'New person', i+1, function(){ data.team.splice(i,1); renderTeam(); save(); });
+    var g=document.createElement('div'); g.className='grid3';
+    g.appendChild(field('Name',p.name,function(v){ p.name=v; }));
+    g.appendChild(field('Initials',p.initials,function(v){ p.initials=v.toUpperCase().slice(0,3); }));
+    g.appendChild(field('Licence line',p.licence||'',function(v){ p.licence=v; }));
+    d.appendChild(g);
+    d.appendChild(field('Job title',p.role,function(v){ p.role=v; }));
+    d.appendChild(field('About them',p.bio,function(v){ p.bio=v; },'area'));
+    c.appendChild(d);
+  });
+}
+$('#addPerson').addEventListener('click', function(){
+  data.team.push({initials:'AB',name:'New person',role:'',licence:'',bio:''}); renderTeam(); save();
+});
+
+/* reviews */
+function renderReviews(){
+  var c=$('#reviewsEditor'); c.innerHTML='';
+  data.reviews.forEach(function(r,i){
+    var d=shell(r.name||'New review', i+1, function(){ data.reviews.splice(i,1); renderReviews(); save(); });
+    d.appendChild(field('What they wrote',r.text,function(v){ r.text=v; },'area'));
+    var g=document.createElement('div'); g.className='grid3';
+    g.appendChild(field('Their name',r.name,function(v){ r.name=v; }));
+    g.appendChild(field('Suburb',r.suburb,function(v){ r.suburb=v; }));
+    g.appendChild(field('Job done',r.job,function(v){ r.job=v; }));
+    d.appendChild(g);
+    c.appendChild(d);
+  });
+}
+$('#addReview').addEventListener('click', function(){
+  data.reviews.push({text:'',name:'',suburb:'',job:''}); renderReviews(); save();
+});
+
+/* faq */
+function renderFaq(){
+  var c=$('#faqEditor'); c.innerHTML='';
+  data.faq.forEach(function(f,i){
+    var d=shell('Question '+(i+1), i+1, function(){ data.faq.splice(i,1); renderFaq(); save(); });
+    d.appendChild(field('Question',f.q,function(v){ f.q=v; }));
+    d.appendChild(field('Answer',f.a,function(v){ f.a=v; },'area'));
+    c.appendChild(d);
+  });
+}
+$('#addFaq').addEventListener('click', function(){
+  data.faq.push({q:'',a:''}); renderFaq(); save();
+});
+
+function renderSuburbs(){ (function redo(){ stringList($('#suburbsEditor'), data.suburbs, 'Add a suburb', redo); })(); }
+function renderCreds(){ (function redo(){ stringList($('#credsEditor'), data.credentials, 'Add a badge', redo); })(); }
+
+function renderAll(){
+  renderHours(); renderStats(); renderCats(); renderRates(); renderFixed();
+  renderTeam(); renderReviews(); renderFaq(); renderSuburbs(); renderCreds();
+}
+
+/* download / copy / reset */
+function json(){ return JSON.stringify(data,null,2); }
+$('#download').addEventListener('click', function(){
+  var blob=new Blob([json()],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='content.json'; a.click();
+  URL.revokeObjectURL(a.href);
+});
+$('#copyJson').addEventListener('click', function(){
+  navigator.clipboard.writeText(json()).then(function(){
+    $('#pubStatus').innerHTML='<span class="ok">Copied. Paste it into content.json.</span>';
+  });
+});
+$('#reset').addEventListener('click', function(){
+  showModal('<h2>Undo everything?</h2><p>This throws away every change made on this device and goes back to what\u2019s on the live site right now.</p>'+
+    '<div class="modal-actions"><button class="btn danger" id="yesReset">Yes, undo it all</button><button class="btn dark" id="noReset">Keep my changes</button></div>');
+  $('#yesReset').addEventListener('click', function(){
+    localStorage.removeItem(STORE);
+    data=JSON.parse(JSON.stringify(original));
+    bindFields(); renderAll(); closeModal(); refreshPrev();
+  });
+  $('#noReset').addEventListener('click', closeModal);
+});
+
+/* publish — the customer never sees GitHub */
+$('#doPublish').addEventListener('click', function(){
+  var st=$('#pubStatus'), btn=$('#doPublish');
+  st.textContent=''; btn.disabled=true; btn.innerHTML='<span class="spin"></span>Publishing…';
+  fetch('/.netlify/functions/publish',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ passcode: PASSCODE, content: data })
+  })
+  .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, body:j}; }); })
+  .then(function(res){
+    btn.disabled=false; btn.innerHTML='Publish now';
+    if(res.ok && res.body.ok){
+      st.innerHTML='<span class="ok">Published. The live site updates in about a minute.</span>';
+      original=JSON.parse(JSON.stringify(data));
+    } else {
+      st.innerHTML='<span class="bad">'+esc(res.body.error||'Something went wrong')+'</span><br>Use \u201cDownload content.json\u201d and send it to your web person instead.';
+    }
+  })
+  .catch(function(){
+    btn.disabled=false; btn.innerHTML='Publish now';
+    st.innerHTML='<span class="bad">Couldn\u2019t reach the publish service.</span><br>Use \u201cDownload content.json\u201d and send it to your web person instead.';
+  });
+});
+
+function showModal(h){ $('#modalBox').innerHTML=h; $('#modal').classList.add('on'); }
+function closeModal(){ $('#modal').classList.remove('on'); }
+$('#modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+
+boot();
+})();
+</script>
+</body>
+</html>

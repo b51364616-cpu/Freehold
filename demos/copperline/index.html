@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copperline Electrical — Electrician in Bulimba, Brisbane</title>
+<meta name="description" content="Licensed electricians in Bulimba. Switchboard upgrades, rewires, smoke alarm compliance, EV chargers and 24 hour emergency callouts across Brisbane's inner east.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Public+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#101A33;
+  --ink-2:#1B2A4E;
+  --ink-3:#2A3C63;
+  --paper:#F5F7F9;
+  --white:#FFFFFF;
+  --copper:#B86B3C;
+  --copper-lt:#D89162;
+  --copper-pale:#F3E5DA;
+  --cobalt:#2B5FD9;
+  --slate:#5D6B82;
+  --slate-lt:#8695A8;
+  --line:rgba(16,26,51,.13);
+  --go:#1E9E6A;
+  --warn:#C6362C;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --pad:clamp(1.25rem,5vw,5rem);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Public Sans',system-ui,-apple-system,sans-serif;
+  font-size:clamp(1rem,.95rem + .22vw,1.08rem);
+  line-height:1.65;font-weight:400;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+
+h1,h2,h3,.serif{font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.005em;line-height:1.02;margin:0}
+h1{font-size:clamp(2.7rem,6.4vw,5rem);text-wrap:balance}
+h2{font-size:clamp(2.1rem,4.4vw,3.5rem);text-wrap:balance}
+h3{font-family:'Public Sans',sans-serif;font-weight:650;font-size:1.08rem;letter-spacing:-.01em;line-height:1.3}
+p{margin:0 0 1em;max-width:64ch}
+a{color:inherit}
+:focus-visible{outline:2.5px solid var(--cobalt);outline-offset:3px}
+
+.wrap{max-width:1240px;margin:0 auto;padding-inline:var(--pad)}
+section{padding-block:clamp(3.5rem,8vw,7.5rem)}
+.eyebrow{
+  font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;
+  font-weight:600;color:var(--copper);margin-bottom:1.1rem;display:block;
+}
+.lead{font-size:clamp(1.06rem,1.5vw,1.2rem);color:var(--slate);max-width:54ch}
+
+/* ============ loader ============ */
+#veil{position:fixed;inset:0;z-index:300;background:var(--paper);pointer-events:none}
+body.lit #veil{opacity:0;transition:opacity .55s var(--ease)}
+body.done #veil{display:none}
+
+/* ============ scroll cable ============ */
+#cable{
+  position:fixed;left:0;top:0;bottom:0;width:2px;z-index:60;
+  background:var(--line);pointer-events:none;
+}
+#cable i{display:block;width:100%;height:100%;background:linear-gradient(180deg,var(--copper-lt),var(--copper));transform:scaleY(0);transform-origin:50% 0}
+@media (max-width:1240px){#cable{display:none}}
+
+/* ============ header ============ */
+header{
+  position:sticky;top:0;z-index:100;background:rgba(245,247,249,.88);
+  backdrop-filter:blur(12px);border-bottom:1px solid transparent;
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+header.stuck{border-bottom-color:var(--line);background:rgba(245,247,249,.96)}
+.bar{display:flex;align-items:center;gap:clamp(.75rem,2vw,2rem);height:82px;transition:height .3s var(--ease)}
+header.stuck .bar{height:66px}
+.mark{display:flex;align-items:center;gap:.65rem;text-decoration:none;margin-right:auto;min-width:0}
+.bolt{width:30px;height:30px;flex:none}
+.bolt path{fill:var(--copper)}
+.bolt rect{fill:none;stroke:var(--ink);stroke-width:1.5}
+.mark b{font-family:'Instrument Serif',serif;font-weight:400;font-size:1.32rem;line-height:1;white-space:nowrap;letter-spacing:-.01em}
+.mark i{display:block;font-style:normal;font-size:.66rem;letter-spacing:.15em;color:var(--slate-lt);text-transform:uppercase;font-weight:600;margin-top:.18rem}
+nav{display:flex;gap:1.5rem;font-size:.93rem}
+nav a{text-decoration:none;color:var(--slate);position:relative;padding:.25rem 0;transition:color .2s}
+nav a::after{content:"";position:absolute;left:0;bottom:-1px;height:1.5px;width:100%;background:var(--copper);transform:scaleX(0);transform-origin:0 50%;transition:transform .3s var(--ease)}
+nav a:hover{color:var(--ink)}
+nav a:hover::after,nav a.active::after{transform:scaleX(1)}
+nav a.active{color:var(--ink)}
+.oncall{display:flex;align-items:center;gap:.45rem;font-size:.8rem;color:var(--slate);white-space:nowrap}
+.pip{width:7px;height:7px;border-radius:50%;background:var(--go);flex:none;animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(30,158,106,.5)}60%{box-shadow:0 0 0 7px rgba(30,158,106,0)}}
+
+/* ============ buttons ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.92rem 1.6rem;border:none;cursor:pointer;font-family:inherit;
+  font-size:.94rem;font-weight:600;text-decoration:none;border-radius:3px;
+  background:var(--ink);color:var(--paper);
+  position:relative;overflow:hidden;isolation:isolate;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--copper);transform:translateY(101%);transition:transform .35s var(--ease)}
+.btn:hover::before{transform:translateY(0)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(16,26,51,.18)}
+.btn:active{transform:translateY(0)}
+.btn.copper{background:var(--copper)}
+.btn.copper::before{background:var(--ink)}
+.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.line::before{background:var(--ink)}
+.btn.line:hover{color:var(--paper);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.sm{padding:.62rem 1.1rem;font-size:.86rem}
+.btn.pale{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1.5px rgba(245,247,249,.35)}
+.btn.pale::before{background:var(--paper)}
+.btn.pale:hover{color:var(--ink)}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.spin{width:14px;height:14px;border:2px solid rgba(245,247,249,.35);border-top-color:var(--paper);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ reveal ============ */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ============ hero ============ */
+.hero{padding-block:clamp(2.5rem,6vw,5rem) clamp(3rem,6vw,5.5rem);position:relative}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.hero h1{margin-bottom:1.7rem}
+.flick{position:relative;color:var(--copper);font-style:italic}
+body.lit .flick{animation:flicker 1.5s steps(1) .35s both}
+@keyframes flicker{
+  0%{opacity:.12}6%{opacity:.85}9%{opacity:.15}13%{opacity:.9}
+  17%{opacity:.2}22%{opacity:1}28%{opacity:.35}33%{opacity:1}100%{opacity:1}
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2.1rem}
+.hero-note{margin-top:1.5rem;font-size:.88rem;color:var(--slate-lt);display:flex;align-items:center;gap:.5rem}
+.hero-note svg{width:15px;height:15px;flex:none;fill:none;stroke:var(--go);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* circuit drawing */
+.schema{position:relative}
+.schema::before{
+  content:"";position:absolute;inset:-6% -4%;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:26px 26px;opacity:.5;
+  -webkit-mask-image:radial-gradient(70% 65% at 50% 50%,#000 35%,transparent 78%);
+          mask-image:radial-gradient(70% 65% at 50% 50%,#000 35%,transparent 78%);
+}
+.schema svg{position:relative;width:100%;height:auto;overflow:visible}
+.trace{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.42}
+.trace-draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+body.lit .trace-draw{animation:draw 1.5s var(--ease) .25s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.flow{fill:none;stroke:var(--copper);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:7 190;opacity:0}
+body.lit .flow{animation:flowIn .5s ease 1.6s forwards,flowMove 3.6s linear 1.6s infinite}
+@keyframes flowIn{to{opacity:1}}
+@keyframes flowMove{to{stroke-dashoffset:-394}}
+.node{opacity:0}
+body.lit .node{animation:pop .5s var(--ease) forwards}
+@keyframes pop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
+.node circle,.node rect,.node path,.node line{transform-box:fill-box;transform-origin:center}
+.n-body{fill:var(--white);stroke:var(--ink);stroke-width:1.6}
+.n-mark{fill:none;stroke:var(--copper);stroke-width:1.7;stroke-linecap:round}
+.n-label{font-family:'Public Sans',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.1em;fill:var(--slate-lt);text-transform:uppercase}
+.board-rect{fill:var(--white);stroke:var(--ink);stroke-width:1.8}
+.board-bar{fill:var(--copper);opacity:.85}
+
+/* ============ stats ============ */
+.stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.stat{background:var(--paper);padding:1.9rem 1.4rem}
+.stat b{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.1rem,3.6vw,2.9rem);line-height:1;display:block;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:.83rem;color:var(--slate);margin-top:.5rem;line-height:1.4;max-width:20ch}
+
+/* ============ credentials ============ */
+.creds{padding-block:1.6rem}
+.creds .wrap{display:flex;flex-wrap:wrap;gap:.6rem 1rem;justify-content:center}
+.cred{
+  display:flex;align-items:center;gap:.45rem;font-size:.8rem;color:var(--slate);
+  background:var(--white);border:1px solid var(--line);padding:.42rem .85rem;border-radius:100px;
+}
+.cred svg{width:13px;height:13px;flex:none;fill:none;stroke:var(--copper);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============ services tabs ============ */
+.tabnav{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2.2rem;border-bottom:1px solid var(--line)}
+.tabnav button{
+  background:none;border:none;cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:550;
+  color:var(--slate);padding:.8rem 1.1rem;position:relative;transition:color .2s;
+}
+.tabnav button::after{content:"";position:absolute;left:.6rem;right:.6rem;bottom:-1px;height:2px;background:var(--copper);transform:scaleX(0);transition:transform .3s var(--ease)}
+.tabnav button:hover{color:var(--ink)}
+.tabnav button[aria-selected="true"]{color:var(--ink)}
+.tabnav button[aria-selected="true"]::after{transform:scaleX(1)}
+.tabpane{display:none}
+.tabpane.on{display:block}
+.tabpane.on .svc{animation:rise .55s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.cat-blurb{color:var(--slate);margin-bottom:2rem;max-width:56ch}
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.svc{
+  background:var(--paper);padding:1.75rem;display:flex;flex-direction:column;gap:.6rem;
+  position:relative;transition:background .3s var(--ease);
+}
+.svc:hover{background:var(--white)}
+.svc::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--copper);transform:scaleY(0);transform-origin:50% 0;transition:transform .35s var(--ease)}
+.svc:hover::after{transform:scaleY(1)}
+.svc p{margin:0;font-size:.94rem;color:var(--slate);max-width:46ch}
+.svc-price{margin-top:auto;padding-top:.9rem;display:flex;align-items:baseline;gap:.55rem;border-top:1px solid var(--line)}
+.svc-price b{font-family:'Instrument Serif',serif;font-weight:400;font-size:1.5rem;line-height:1}
+.svc-price span{font-size:.78rem;color:var(--slate-lt)}
+.svc-grid .svc:nth-child(1){animation-delay:.02s}
+.svc-grid .svc:nth-child(2){animation-delay:.07s}
+.svc-grid .svc:nth-child(3){animation-delay:.12s}
+.svc-grid .svc:nth-child(4){animation-delay:.17s}
+.svc-grid .svc:nth-child(5){animation-delay:.22s}
+.svc-grid .svc:nth-child(6){animation-delay:.27s}
+
+/* ============ dark band (smoke alarms) ============ */
+.band{background:var(--ink);color:var(--paper)}
+.band .eyebrow{color:var(--copper-lt)}
+.band h2{color:var(--white)}
+.band p{color:#A9B6CC}
+.band-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.deadline{
+  border:1px solid rgba(245,247,249,.16);padding:1.75rem;background:rgba(255,255,255,.03);
+}
+.deadline .big{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,5vw,3.6rem);line-height:1;color:var(--copper-lt);display:block}
+.deadline .cap{font-size:.85rem;color:#A9B6CC;margin-top:.6rem;display:block}
+.deadline ul{list-style:none;padding:0;margin:1.6rem 0 0}
+.deadline li{display:flex;gap:.8rem;padding:.8rem 0;border-top:1px solid rgba(245,247,249,.12);font-size:.94rem;color:#C3CEDE;align-items:flex-start}
+.deadline li svg{flex:none;margin-top:.3rem;width:15px;height:15px;fill:none;stroke:var(--copper-lt);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============ safety check ============ */
+.check{background:var(--white)}
+.check-shell{
+  border:1px solid var(--line);background:var(--paper);
+  padding:clamp(1.6rem,4vw,3rem);max-width:760px;margin:0 auto;position:relative;overflow:hidden;
+}
+.qbar{height:2px;background:var(--line);margin-bottom:2rem;position:relative}
+.qbar i{position:absolute;left:0;top:0;bottom:0;background:var(--copper);width:0;transition:width .45s var(--ease)}
+.qcount{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate-lt);font-weight:600;margin-bottom:1rem;display:block}
+.qtext{font-family:'Instrument Serif',serif;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.14;margin-bottom:1.9rem;max-width:30ch}
+.qopts{display:flex;flex-wrap:wrap;gap:.6rem}
+.qopts button{
+  flex:1 1 150px;background:var(--white);border:1px solid var(--line);cursor:pointer;
+  font-family:inherit;font-size:.95rem;font-weight:550;color:var(--ink);padding:.95rem 1rem;border-radius:3px;
+  transition:border-color .2s,background .2s,transform .2s var(--ease);
+}
+.qopts button:hover{border-color:var(--cobalt);background:#F0F4FE;transform:translateY(-2px)}
+.qback{margin-top:1.6rem;background:none;border:none;cursor:pointer;font-family:inherit;font-size:.85rem;color:var(--slate-lt);padding:0;text-decoration:underline;text-underline-offset:3px}
+.qback:hover{color:var(--ink)}
+.qstage{animation:swap .38s var(--ease) both}
+@keyframes swap{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.result .badge{
+  display:inline-block;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;
+  padding:.35rem .8rem;border-radius:100px;margin-bottom:1.2rem;
+}
+.badge.low{background:#E3F4EC;color:#12724B}
+.badge.mid{background:var(--copper-pale);color:#8F4E20}
+.badge.high{background:#FBE7E5;color:#96251D}
+.result h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.1;margin-bottom:.9rem}
+.result .flags{list-style:none;padding:0;margin:1.5rem 0 0}
+.result .flags li{display:flex;gap:.7rem;padding:.7rem 0;border-top:1px solid var(--line);font-size:.93rem;color:var(--slate);align-items:flex-start}
+.result .flags svg{flex:none;margin-top:.32rem;width:14px;height:14px;fill:none;stroke:var(--copper);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.result-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2rem}
+
+/* ============ rates ============ */
+.rates-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+.rate{display:grid;grid-template-columns:1fr auto;gap:.3rem 1.5rem;padding:1.3rem 0;border-bottom:1px solid var(--line)}
+.rate:first-child{border-top:1px solid var(--line)}
+.rate b{font-weight:600;font-size:1rem}
+.rate .amt{grid-row:1/span 2;font-family:'Instrument Serif',serif;font-weight:400;font-size:1.9rem;line-height:1;align-self:center}
+.rate p{margin:0;font-size:.88rem;color:var(--slate);max-width:42ch}
+.fixed{background:var(--white);border:1px solid var(--line);padding:1.75rem}
+.fixed h3{margin-bottom:1.2rem}
+.fixed dl{margin:0;display:grid;gap:0}
+.fixed .fx{display:flex;justify-content:space-between;gap:1.5rem;padding:.8rem 0;border-top:1px solid var(--line);font-size:.93rem;align-items:baseline}
+.fixed .fx:first-child{border-top:none}
+.fixed .fx b{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fixed .fx span{color:var(--slate)}
+
+/* ============ team ============ */
+.crew{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3vw,2.5rem)}
+.person{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start}
+.face{
+  width:104px;height:130px;flex:none;background:var(--ink);display:grid;place-items:center;position:relative;overflow:hidden;
+}
+.face span{font-family:'Instrument Serif',serif;font-size:2.4rem;color:var(--copper-lt);line-height:1;transition:transform .5s var(--ease)}
+.person:hover .face span{transform:scale(1.12)}
+.face::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--copper)}
+.person h3{font-size:1.2rem;margin-bottom:.15rem}
+.person .role{font-size:.85rem;color:var(--copper);font-weight:600;margin-bottom:.2rem}
+.person .lic{font-size:.76rem;color:var(--slate-lt);margin-bottom:.85rem;letter-spacing:.04em}
+.person p{margin:0;font-size:.93rem;color:var(--slate)}
+
+/* ============ testimonial rotator ============ */
+.says{background:var(--ink);color:var(--paper);overflow:hidden}
+.says .eyebrow{color:var(--copper-lt)}
+.quote-stage{min-height:270px;position:relative}
+.quotecard{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .6s var(--ease),transform .6s var(--ease);transform:translateY(14px)}
+.quotecard.on{opacity:1;pointer-events:auto;transform:none;position:relative}
+.quotecard blockquote{
+  font-family:'Instrument Serif',serif;font-size:clamp(1.35rem,2.9vw,2.15rem);line-height:1.28;
+  color:var(--white);margin:0 0 1.8rem;max-width:26ch;
+}
+.qmeta{display:flex;flex-wrap:wrap;gap:.35rem 1.3rem;align-items:baseline;font-size:.9rem;color:#A9B6CC}
+.qmeta b{color:var(--copper-lt);font-weight:600}
+.qnav{display:flex;gap:.5rem;margin-top:2.2rem;align-items:center}
+.qdot{width:30px;height:2px;background:rgba(245,247,249,.25);border:none;cursor:pointer;padding:0;transition:background .3s}
+.qdot.on{background:var(--copper)}
+.qarrow{
+  width:38px;height:38px;border:1px solid rgba(245,247,249,.25);background:none;cursor:pointer;
+  display:grid;place-items:center;margin-left:auto;transition:background .2s,border-color .2s;
+}
+.qarrow:hover{background:rgba(245,247,249,.1);border-color:var(--copper)}
+.qarrow svg{width:15px;height:15px;fill:none;stroke:var(--paper);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.qarrow + .qarrow{margin-left:0}
+
+/* ============ booking ============ */
+.book-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
+form{display:grid;gap:1rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+label{display:block;font-size:.8rem;color:var(--slate);margin-bottom:.4rem;font-weight:600}
+input,select,textarea{
+  width:100%;padding:.85rem .95rem;background:var(--white);color:var(--ink);
+  border:1px solid var(--line);border-radius:3px;font-family:inherit;font-size:.96rem;
+  transition:border-color .2s,box-shadow .2s;
+}
+input::placeholder,textarea::placeholder{color:var(--slate-lt)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 3px rgba(43,95,217,.12)}
+input.bad{border-color:var(--warn);animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+textarea{resize:vertical;min-height:96px}
+.fnote{font-size:.82rem;color:var(--slate-lt);margin:0}
+.ferr{font-size:.86rem;color:var(--warn);margin:0;display:none}
+.ferr.show{display:block}
+.confirm{background:var(--white);border:1px solid var(--line);border-left:3px solid var(--go);padding:1.9rem;display:none}
+.confirm.show{display:block;animation:rise .5s var(--ease) both}
+.confirm b{display:block;font-family:'Instrument Serif',serif;font-weight:400;font-size:1.5rem;margin-bottom:.5rem}
+.confirm p{margin:0;color:var(--slate);font-size:.95rem}
+.tickmark{width:40px;height:40px;margin-bottom:1rem;stroke:var(--go);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tickmark circle{stroke-dasharray:151;stroke-dashoffset:151;animation:sdraw .6s var(--ease) forwards}
+.tickmark path{stroke-dasharray:42;stroke-dashoffset:42;animation:sdraw .4s var(--ease) .5s forwards}
+@keyframes sdraw{to{stroke-dashoffset:0}}
+
+.side-block{padding:1.4rem 0;border-top:1px solid var(--line)}
+.side-block:first-child{border-top:none;padding-top:0}
+.side-block h3{margin-bottom:.6rem}
+.side-block p{margin:0;font-size:.94rem;color:var(--slate)}
+.side-block a{color:var(--cobalt);text-decoration:none}
+.side-block a:hover{text-decoration:underline}
+.hours{display:grid;gap:.3rem;font-size:.92rem;color:var(--slate)}
+.hours div{display:flex;justify-content:space-between;gap:1rem;max-width:19rem}
+.hours .today{color:var(--copper);font-weight:650}
+.area-list{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.3rem}
+.area-list span{font-size:.8rem;background:var(--white);border:1px solid var(--line);padding:.25rem .6rem;border-radius:3px;color:var(--slate)}
+
+/* emergency callout */
+.sos{background:var(--copper);color:var(--white);padding:1.5rem;margin-bottom:1.6rem}
+.sos b{display:block;font-family:'Instrument Serif',serif;font-weight:400;font-size:1.4rem;margin-bottom:.4rem}
+.sos p{margin:0 0 1rem;font-size:.92rem;color:rgba(255,255,255,.9);max-width:38ch}
+.sos .btn{background:var(--white);color:var(--ink)}
+.sos .btn::before{background:var(--ink)}
+.sos .btn:hover{color:var(--white)}
+
+/* ============ faq ============ */
+details{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;padding:1.3rem 2.5rem 1.3rem 0;list-style:none;position:relative;font-weight:600;font-size:1.02rem;transition:color .2s}
+summary:hover{color:var(--copper)}
+summary::-webkit-details-marker{display:none}
+summary::after,summary::before{content:"";position:absolute;right:.5rem;background:var(--copper);transition:transform .3s var(--ease)}
+summary::after{top:1.9rem;width:13px;height:1.5px}
+summary::before{top:1.32rem;right:1.08rem;width:1.5px;height:13px}
+details[open] summary::before{transform:scaleY(0)}
+details[open] .ans{animation:rise .35s var(--ease) both}
+.ans{padding-bottom:1.3rem;margin:0;color:var(--slate);max-width:64ch;font-size:.97rem}
+
+/* ============ footer ============ */
+footer.site{background:var(--ink);color:#8695A8;padding-block:3.5rem 2rem;font-size:.88rem}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2.5rem}
+footer.site .mark b{color:var(--white)}
+footer.site .mark i{color:var(--slate-lt)}
+footer.site h4{color:var(--paper);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 1rem;font-weight:700}
+footer.site ul{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
+footer.site a{text-decoration:none;color:#8695A8;transition:color .2s}
+footer.site a:hover{color:var(--copper-lt)}
+footer.site p{max-width:34ch;line-height:1.65;margin:1rem 0 0}
+.legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(245,247,249,.1);display:flex;flex-wrap:wrap;gap:.6rem 2rem;font-size:.78rem;color:#63728A}
+
+#up{
+  position:fixed;right:1.2rem;bottom:1.2rem;z-index:90;width:44px;height:44px;
+  display:grid;place-items:center;background:var(--ink);border:none;cursor:pointer;border-radius:3px;
+  opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease);
+}
+#up.show{opacity:1;transform:none;pointer-events:auto}
+#up:hover{background:var(--copper)}
+#up svg{width:17px;height:17px;fill:none;stroke:var(--paper);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============ responsive ============ */
+@media (max-width:1000px){
+  .hero-grid,.band-grid,.rates-grid,.book-grid{grid-template-columns:1fr}
+  .schema{order:-1;max-width:460px}
+  .svc-grid,.crew{grid-template-columns:1fr}
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  nav{display:none}
+}
+@media (max-width:620px){
+  .row{grid-template-columns:1fr}
+  .oncall{display:none}
+  .foot-grid{grid-template-columns:1fr}
+  .person{grid-template-columns:1fr}
+  .rate{grid-template-columns:1fr}
+  .rate .amt{grid-row:auto}
+  .quote-stage{min-height:340px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+  .trace-draw{stroke-dashoffset:0}
+  .node{opacity:1}
+  .flow{opacity:.9}
+}
+</style>
+</head>
+<body>
+
+<div id="veil" aria-hidden="true"></div>
+<div id="cable" aria-hidden="true"><i></i></div>
+
+<header id="hdr">
+  <div class="wrap bar">
+    <a class="mark" href="#top">
+      <svg class="bolt" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2.5" y="2.5" width="19" height="19" rx="3"/>
+        <path d="M13.4 5.2 8.1 13h3.2l-1 5.9L15.9 11h-3.4z"/>
+      </svg>
+      <span><b data-bind="business.name">Copperline Electrical</b><i data-bind="business.suburb">Bulimba QLD</i></span>
+    </a>
+    <nav id="nav">
+      <a href="#services">Services</a>
+      <a href="#alarms">Smoke alarms</a>
+      <a href="#check">Safety check</a>
+      <a href="#rates">Rates</a>
+      <a href="#team">Who we are</a>
+    </nav>
+    <span class="oncall"><span class="pip"></span><span id="oncallText">24 hour emergency line</span></span>
+    <a class="btn sm" href="#booking">Book a job</a>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow rv" id="heroEyebrow">Licensed electrical contractor</span>
+      <h1 class="rv" id="heroHeadline"></h1>
+      <p class="lead rv" id="heroLede"></p>
+      <div class="hero-actions rv">
+        <a class="btn copper" href="#booking">Book a job</a>
+        <a class="btn line" id="heroCall" href="#">Call</a>
+      </div>
+      <p class="hero-note rv">
+        <svg viewBox="0 0 24 24"><path d="m4 12.5 5.5 5.5L20 6.5"/></svg>
+        <span id="heroAvail"></span>
+      </p>
+    </div>
+
+    <div class="schema" aria-hidden="true">
+      <svg viewBox="0 0 560 440" xmlns="http://www.w3.org/2000/svg">
+        <!-- switchboard -->
+        <g class="node" style="animation-delay:.1s">
+          <rect class="board-rect" x="34" y="150" width="92" height="140" rx="4"/>
+          <rect class="board-bar" x="46" y="166" width="68" height="9" rx="2"/>
+          <rect class="board-bar" x="46" y="184" width="68" height="9" rx="2" opacity=".5"/>
+          <rect class="board-bar" x="46" y="202" width="68" height="9" rx="2" opacity=".5"/>
+          <rect class="board-bar" x="46" y="220" width="68" height="9" rx="2" opacity=".5"/>
+          <text class="n-label" x="80" y="310" text-anchor="middle">Switchboard</text>
+        </g>
+
+        <!-- traces -->
+        <path class="trace trace-draw" style="--len:420" d="M126 176 H214 Q232 176 232 158 V104 Q232 86 250 86 H392"/>
+        <path class="trace trace-draw" style="--len:320" d="M126 196 H446"/>
+        <path class="trace trace-draw" style="--len:400" d="M126 236 H268 Q286 236 286 254 V300 Q286 318 304 318 H386"/>
+        <path class="trace trace-draw" style="--len:330" d="M126 266 H188 Q206 266 206 284 V354 Q206 372 224 372 H236"/>
+
+        <!-- current -->
+        <path class="flow" d="M126 176 H214 Q232 176 232 158 V104 Q232 86 250 86 H392"/>
+        <path class="flow" style="animation-delay:1.9s,1.9s" d="M126 236 H268 Q286 236 286 254 V300 Q286 318 304 318 H386"/>
+
+        <!-- light -->
+        <g class="node" style="animation-delay:1.75s">
+          <circle class="n-body" cx="412" cy="86" r="19"/>
+          <path class="n-mark" d="M405 86a7 7 0 0 1 14 0M409 93h6"/>
+          <path class="n-mark" d="M412 60v-7M436 86h7M388 86h-7M429 69l5-5M395 69l-5-5"/>
+          <text class="n-label" x="412" y="127" text-anchor="middle">Lighting</text>
+        </g>
+        <!-- outlet -->
+        <g class="node" style="animation-delay:1.9s">
+          <rect class="n-body" x="446" y="174" width="44" height="44" rx="6"/>
+          <path class="n-mark" d="M461 188v9M475 188v9M461 205h14"/>
+          <text class="n-label" x="468" y="236" text-anchor="middle">Power</text>
+        </g>
+        <!-- EV -->
+        <g class="node" style="animation-delay:2.05s">
+          <rect class="n-body" x="386" y="292" width="40" height="52" rx="6"/>
+          <path class="n-mark" d="M399 306h14M399 316h14M406 326v9"/>
+          <text class="n-label" x="406" y="362" text-anchor="middle">EV charger</text>
+        </g>
+        <!-- smoke alarm -->
+        <g class="node" style="animation-delay:2.2s">
+          <circle class="n-body" cx="256" cy="372" r="21"/>
+          <circle class="n-mark" cx="256" cy="372" r="7"/>
+          <path class="n-mark" d="M256 358v-4M270 372h4M256 386v4M242 372h-4"/>
+          <text class="n-label" x="256" y="412" text-anchor="middle">Smoke alarms</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="stats"><div class="wrap" id="statRow"></div></div>
+
+<div class="creds"><div class="wrap" id="credRow"></div></div>
+
+<section id="services">
+  <div class="wrap">
+    <span class="eyebrow rv">What we do</span>
+    <h2 class="rv" style="margin-bottom:1.2rem">Domestic, commercial, and everything mid-renovation.</h2>
+    <p class="lead rv" style="margin-bottom:2.6rem">Prices below are real starting points for straightforward jobs. Anything unusual gets a fixed quote after we've seen it — we don't do the ring-back-with-bad-news routine.</p>
+    <div class="tabnav rv" id="tabnav" role="tablist"></div>
+    <div id="tabpanes"></div>
+  </div>
+</section>
+
+<section id="alarms" class="band">
+  <div class="wrap band-grid">
+    <div>
+      <span class="eyebrow rv">Queensland smoke alarm legislation</span>
+      <h2 class="rv" style="margin-bottom:1.3rem">Every Queensland home needs interconnected alarms by 2027.</h2>
+      <p class="rv">Since January 2022, any home being sold, leased, or having a lease renewed has needed photoelectric, interconnected smoke alarms — in every bedroom, in the hallways connecting them, and on every storey. From 1 January 2027 that extends to all owner-occupied homes in the state.</p>
+      <p class="rv">Interconnected means when one sounds, they all sound. It's the single change most likely to get everyone out of a house at 3am, and it's why the legislation exists.</p>
+      <p class="rv">Most three bedroom houses need four to five alarms. We supply and fit a compliant set, interconnect them, test the lot and hand you the paperwork — usually in a morning.</p>
+      <div class="hero-actions rv">
+        <a class="btn copper" href="#booking">Book an alarm upgrade</a>
+        <a class="btn pale" href="#check">Check my home first</a>
+      </div>
+    </div>
+    <div class="deadline rv">
+      <span class="big" id="countdown">—</span>
+      <span class="cap">until the 1 January 2027 deadline for owner-occupied homes</span>
+      <ul>
+        <li><svg viewBox="0 0 24 24"><path d="m4 12.5 5.5 5.5L20 6.5"/></svg><span>Photoelectric alarms, hard-wired or ten year sealed battery</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="m4 12.5 5.5 5.5L20 6.5"/></svg><span>In every bedroom, connecting hallways, and on each storey</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="m4 12.5 5.5 5.5L20 6.5"/></svg><span>All interconnected, so one triggers the rest</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="m4 12.5 5.5 5.5L20 6.5"/></svg><span>Required now for any home sold or leased</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="m4 12.5 5.5 5.5L20 6.5"/></svg><span>Certificate issued and kept on file for you</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="check" class="check">
+  <div class="wrap">
+    <div style="text-align:center;max-width:620px;margin:0 auto clamp(2rem,4vw,3rem)">
+      <span class="eyebrow rv">Two minute safety check</span>
+      <h2 class="rv" style="margin-bottom:1rem">How safe is the wiring in your house?</h2>
+      <p class="lead rv" style="margin-inline:auto">Six questions about things you can see without touching anything. You'll get a straight answer about whether it's worth doing something, and roughly what it would cost.</p>
+    </div>
+    <div class="check-shell rv" id="checkShell"></div>
+  </div>
+</section>
+
+<section id="rates">
+  <div class="wrap">
+    <span class="eyebrow rv">What it costs</span>
+    <h2 class="rv" style="margin-bottom:1.2rem">Our rates, in public, where you can read them.</h2>
+    <p class="lead rv" style="margin-bottom:3rem">Charged in fifteen minute blocks. No fuel levy, no "administration fee", no surprise on the invoice that wasn't in the conversation.</p>
+    <div class="rates-grid">
+      <div class="rv"><div id="rateList"></div></div>
+      <div class="fixed rv">
+        <h3>Common jobs, fixed price</h3>
+        <dl id="fixedList"></dl>
+        <p style="font-size:.84rem;color:var(--slate-lt);margin:1.3rem 0 0">Fixed prices assume standard access and no surprises behind the wall. If we find something, we stop and call you before doing anything that changes the price.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <span class="eyebrow rv">Who turns up</span>
+    <h2 class="rv" style="margin-bottom:1.2rem">Two electricians, both named on your certificate.</h2>
+    <p class="lead rv" style="margin-bottom:3rem">Not a call centre with a roster of subcontractors. You'll get one of these two, and whoever quoted the job is the one who does it.</p>
+    <div class="crew" id="crewList"></div>
+  </div>
+</section>
+
+<section class="says">
+  <div class="wrap">
+    <span class="eyebrow rv">What people say</span>
+    <div class="quote-stage rv" id="quoteStage"></div>
+    <div class="qnav rv" id="qnav"></div>
+  </div>
+</section>
+
+<section id="booking">
+  <div class="wrap book-grid">
+    <div>
+      <span class="eyebrow rv">Get in touch</span>
+      <h2 class="rv" style="margin-bottom:1.2rem">Tell us what's going on.</h2>
+      <p class="lead rv" style="margin-bottom:2rem">We'll come back with a time and a price, usually the same day. Nothing is locked in until you say so.</p>
+
+      <form id="bookForm" class="rv" novalidate>
+        <div class="row">
+          <div><label for="fname">Your name</label><input id="fname" name="Name" type="text" placeholder="Alex Turner" required></div>
+          <div><label for="fphone">Mobile</label><input id="fphone" name="Mobile" type="tel" placeholder="0412 345 678" required></div>
+        </div>
+        <div class="row">
+          <div><label for="femail">Email</label><input id="femail" name="Email" type="email" placeholder="alex@example.com"></div>
+          <div><label for="fsuburb">Suburb</label><input id="fsuburb" name="Suburb" type="text" placeholder="Bulimba"></div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="ftype">What do you need?</label>
+            <select id="ftype" name="Job type">
+              <option>Switchboard upgrade</option>
+              <option>Safety switches</option>
+              <option>Smoke alarm compliance</option>
+              <option>Lighting or downlights</option>
+              <option>Power points</option>
+              <option>Fault finding — something's not working</option>
+              <option>Rewire or renovation</option>
+              <option>EV charger</option>
+              <option>Solar related</option>
+              <option>Commercial work</option>
+              <option>Emergency — right now</option>
+            </select>
+          </div>
+          <div>
+            <label for="furgency">How urgent?</label>
+            <select id="furgency" name="Urgency">
+              <option>Sometime in the next few weeks</option>
+              <option>This week if possible</option>
+              <option>Today or tomorrow</option>
+              <option>Emergency — call me straight away</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="fnotes">Anything we should know?</label>
+          <textarea id="fnotes" name="Notes" placeholder="Half the power points in the back of the house stopped working yesterday. Board looks original, house is a 1960s lowset."></textarea>
+        </div>
+        <input type="text" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <button class="btn copper" type="submit" id="submitBtn">Send this through</button>
+        <p class="ferr" id="formErr"></p>
+        <p class="fnote">We'll text or call to confirm. No deposit, no card details, no obligation.</p>
+      </form>
+
+      <div class="confirm" id="confirm" role="status">
+        <svg class="tickmark" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="m14 27 8 8 16-16"/></svg>
+        <b>Got it</b>
+        <p id="confirmText"></p>
+      </div>
+    </div>
+
+    <div class="rv">
+      <div class="sos">
+        <b>Emergency?</b>
+        <p id="sosNote"></p>
+        <a class="btn sm" id="sosCall" href="#">Call now</a>
+      </div>
+      <div class="side-block">
+        <h3>Where we are</h3>
+        <p><span data-bind="business.addressLine1"></span><br><span data-bind="business.addressLine2"></span><br><span data-bind="business.directions"></span><br><a id="mapLink" target="_blank" rel="noopener">Open in Google Maps</a></p>
+      </div>
+      <div class="side-block">
+        <h3>Office hours</h3>
+        <div class="hours" id="hoursList"></div>
+        <p style="margin-top:.8rem;font-size:.85rem;color:var(--slate-lt)">The emergency line is answered outside these hours, every day.</p>
+      </div>
+      <div class="side-block">
+        <h3>Areas we cover</h3>
+        <div class="area-list" id="areaList"></div>
+      </div>
+      <div class="side-block">
+        <h3>Licensed and insured</h3>
+        <p>Electrical Contractor Licence <span data-bind="business.licence"></span>. $20m public liability. Certificate of Testing issued on completion of every job, without being asked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap" style="max-width:820px">
+    <span class="eyebrow rv">Questions</span>
+    <h2 class="rv" style="margin-bottom:2.4rem">Things people ask before they book.</h2>
+    <div class="rv" id="faqList"></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="mark" href="#top" style="margin-bottom:.5rem">
+          <svg class="bolt" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="3" style="stroke:#8695A8"/>
+            <path d="M13.4 5.2 8.1 13h3.2l-1 5.9L15.9 11h-3.4z"/>
+          </svg>
+          <span><b data-bind="business.name"></b><i data-bind="business.suburb"></i></span>
+        </a>
+        <p>Licensed electrical contractors working across Brisbane's inner east since <span data-bind="business.established"></span>. Certified on completion, every job.</p>
+      </div>
+      <div><h4>Services</h4><ul id="footServices"></ul></div>
+      <div><h4>Areas</h4><ul id="footAreas"></ul></div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a id="footPhone" href="#"></a></li>
+          <li><a id="footEmail" href="#"></a></li>
+          <li><span data-bind="business.addressLine1"></span><br><span data-bind="business.addressLine2"></span></li>
+          <li><a href="#booking">Book online</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal" id="legal"></div>
+  </div>
+</footer>
+
+<button id="up" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M12 19V5m0 0-7 7m7-7 7 7"/></svg></button>
+
+<script>
+/* =====================================================================
+   CONFIG — the two things you change per client
+   ===================================================================== */
+var CONFIG = {
+  // Free key from https://web3forms.com — takes 30 seconds, no account.
+  // Leave blank and the form falls back to the visitor's email app.
+  FORM_ACCESS_KEY: "",
+  FALLBACK_EMAIL: ''  /* portfolio copy: forms show success without sending */
+};
+
+var DEFAULT_CONTENT = {
+  "business": {
+    "name": "Copperline Electrical",
+    "shortName": "Copperline",
+    "suburb": "Bulimba QLD",
+    "established": "2009",
+    "phone": "(07) 3399 2074",
+    "phoneLink": "+61733992074",
+    "email": "office@copperlineelectrical.com.au",
+    "addressLine1": "7/184 Oxford Street",
+    "addressLine2": "Bulimba QLD 4171",
+    "directions": "Upstairs, above the bakery. Parking off Godwin Street.",
+    "mapUrl": "https://maps.google.com/?q=Oxford+Street+Bulimba+QLD",
+    "licence": "86114",
+    "abn": "64 197 402 118",
+    "membership": "Master Electricians Australia"
+  },
+
+  "hero": {
+    "headline": "Electrical work that gets signed off, not just finished.",
+    "flickerWord": "signed off",
+    "lede": "Switchboard upgrades, rewires, smoke alarm compliance and EV chargers across Brisbane's inner east. Licensed, insured, and certified on completion — every single job.",
+    "stats": [
+      { "value": "17", "suffix": "", "label": "Years on the tools in Brisbane" },
+      { "value": "2", "suffix": " hr", "label": "Average emergency response" },
+      { "value": "100", "suffix": "%", "label": "Jobs certified on completion" },
+      { "value": "5", "suffix": " yr", "label": "Workmanship warranty" }
+    ]
+  },
+
+  "availability": {
+    "emergencyNote": "Power out, burning smell, or sparks? Call now — we answer 24 hours.",
+    "responseTime": "Within 2 hours, most of the time",
+    "nextAvailable": "auto"
+  },
+
+  "credentials": [
+    "Electrical Contractor Licence 86114",
+    "Master Electricians Australia",
+    "$20m public liability",
+    "Certificate of Testing on every job",
+    "5 year workmanship warranty"
+  ],
+
+  "hours": [
+    { "day": "Monday",    "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Tuesday",   "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Wednesday", "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Thursday",  "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Friday",    "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Saturday",  "open": "07:30", "close": "12:00", "closed": false },
+    { "day": "Sunday",    "open": "",      "close": "",      "closed": true  }
+  ],
+
+  "categories": [
+    {
+      "name": "Around the house",
+      "blurb": "The everyday work that keeps a home safe and working properly.",
+      "items": [
+        { "title": "Switchboard upgrades", "blurb": "Ceramic fuses and old boards replaced with a modern enclosure, RCBOs on every circuit and room to grow. Usually a day's work.", "price": "$1,450", "priceNote": "from, supplied and installed" },
+        { "title": "Safety switches (RCDs)", "blurb": "Queensland homes need them on power and lighting circuits. If yours only covers the power points, half your house is unprotected.", "price": "$295", "priceNote": "from, per circuit" },
+        { "title": "Lighting and LED upgrades", "blurb": "Downlight replacements, feature and outdoor lighting, dimming that actually works with the fittings you chose.", "price": "$85", "priceNote": "per downlight, from" },
+        { "title": "Power points and USB outlets", "blurb": "New outlets, relocations, weatherproof externals, and the double-with-USB everyone asks for in the kitchen.", "price": "$165", "priceNote": "from, per point" },
+        { "title": "Ceiling fans", "blurb": "Supply and install, or fit the one you've already bought. Includes wall control and existing point check.", "price": "$180", "priceNote": "installation, from" },
+        { "title": "Fault finding", "blurb": "Breakers that trip, lights that flicker, a circuit that's dead. We trace it properly rather than guessing and replacing parts.", "price": "$99", "priceNote": "first 30 minutes" }
+      ]
+    },
+    {
+      "name": "Renovations & rewires",
+      "blurb": "Working alongside builders, architects and owners on jobs that need planning, not just a spanner.",
+      "items": [
+        { "title": "Full and partial rewires", "blurb": "Old rubber or cloth-insulated wiring replaced throughout. We stage it so you can stay living in the house wherever possible.", "price": "$8,500", "priceNote": "from, typical three bedroom" },
+        { "title": "Renovation rough-in and fit-off", "blurb": "Planned with your builder from the frame stage. Every point marked up and agreed before a cable is pulled.", "price": "Quoted", "priceNote": "per plan" },
+        { "title": "Lighting design", "blurb": "Layouts, circuit grouping and switching planned room by room. Far cheaper to think about before the plasterboard goes on.", "price": "$450", "priceNote": "design fee, credited to the job" },
+        { "title": "Kitchen and bathroom fit-outs", "blurb": "Appliance circuits, rangehoods, heated towel rails, exhaust fans, and the dedicated circuits induction cooktops need.", "price": "Quoted", "priceNote": "after site visit" },
+        { "title": "Data, TV and network", "blurb": "Cat6 runs, wall plates, TV points and patch panels — done at rough-in when it costs a fraction of retrofitting.", "price": "$220", "priceNote": "from, per outlet" }
+      ]
+    },
+    {
+      "name": "Solar & EV",
+      "blurb": "The newer end of the trade, done by people who've actually been trained on it.",
+      "items": [
+        { "title": "EV charger installation", "blurb": "7kW single phase or 22kW three phase, load-tested against your existing supply so you don't trip the main when the car and the oven run together.", "price": "$1,290", "priceNote": "from, 7kW installed" },
+        { "title": "Switchboard preparation for solar", "blurb": "Most older boards need work before an inverter can be connected. We do that part properly so your solar installer isn't improvising.", "price": "$690", "priceNote": "from" },
+        { "title": "Battery and inverter connection", "blurb": "Grid connection paperwork, isolation, and the metering changes Energex needs before anything is switched on.", "price": "Quoted", "priceNote": "per system" },
+        { "title": "Solar fault finding", "blurb": "System underperforming, inverter throwing errors, or export not showing on your bill. We test the electrical side independently of the installer.", "price": "$99", "priceNote": "first 30 minutes" }
+      ]
+    },
+    {
+      "name": "Commercial",
+      "blurb": "Shops, cafés, offices and body corporate work across the inner east.",
+      "items": [
+        { "title": "Shop and café fit-outs", "blurb": "Three phase, equipment circuits, emergency and exit lighting, and the certification your council inspection will ask for.", "price": "Quoted", "priceNote": "per project" },
+        { "title": "Test and tag", "blurb": "Scheduled appliance testing with a register you can actually hand to an auditor. Priced per item, cheaper in volume.", "price": "$4.50", "priceNote": "per item, from" },
+        { "title": "Emergency and exit lighting", "blurb": "Installation plus the six-monthly discharge testing AS 2293 requires, logged and certified.", "price": "$320", "priceNote": "from, per test cycle" },
+        { "title": "Thermal imaging", "blurb": "Switchboard scans that find failing connections before they fail. Insurers increasingly ask for these on commercial premises.", "price": "$480", "priceNote": "from, per board" }
+      ]
+    }
+  ],
+
+  "rates": [
+    { "label": "Standard call-out", "amount": "$99", "note": "Includes the first 30 minutes on site. Monday to Friday, 6:30am – 4:30pm." },
+    { "label": "Hourly rate after that", "amount": "$110", "note": "Charged in 15 minute blocks, not rounded up to the hour." },
+    { "label": "After hours and weekends", "amount": "$189", "note": "Call-out including the first 30 minutes. Saturday mornings are charged at the standard rate." },
+    { "label": "Emergency, same night", "amount": "$260", "note": "Call-out for genuine emergencies — no power, burning smell, water through a switchboard." }
+  ],
+
+  "fixedPrices": [
+    { "job": "Safety switch fitted to one circuit", "price": "$295" },
+    { "job": "Three interconnected smoke alarms supplied and fitted", "price": "$690" },
+    { "job": "Switchboard upgrade, single phase", "price": "$1,450" },
+    { "job": "LED downlight changeover, ten lights", "price": "$720" },
+    { "job": "Ceiling fan installed to an existing point", "price": "$180" },
+    { "job": "EV charger, 7kW, installed", "price": "$1,290" },
+    { "job": "Certificate of Testing reissued", "price": "$0" }
+  ],
+
+  "team": [
+    {
+      "initials": "RA",
+      "name": "Ryan Alcott",
+      "role": "Owner, electrical contractor",
+      "bio": "Seventeen years on the tools, the last nine running Copperline. Started out doing commercial fit-outs in the CBD before moving to residential and renovation work in the inner east. Does every quote personally, which is why he'll sometimes take a day to get back to you.",
+      "licence": "Licence 86114"
+    },
+    {
+      "initials": "JM",
+      "name": "Jess Moreau",
+      "role": "Electrician, solar and EV accredited",
+      "bio": "Came through a commercial apprenticeship and picked up solar and battery accreditation in 2021. Handles most of the EV charger and inverter work, and is the person who'll talk you out of an upgrade you don't actually need.",
+      "licence": "Licence 91720"
+    }
+  ],
+
+  "reviews": [
+    {
+      "text": "Ryan quoted a full rewire and was the only one of four sparkies who walked the roof space first. The quote was neither the cheapest nor the dearest, but it was the only one that didn't change halfway through the job. Finished on the day he said.",
+      "name": "Marcus Feld",
+      "suburb": "Hawthorne",
+      "job": "Full rewire, 1930s Queenslander"
+    },
+    {
+      "text": "Had a burning smell at 9pm on a Sunday. Someone answered the phone, talked me through killing the main switch, and was there inside ninety minutes. Turned out to be a cooked neutral in the switchboard. I dread to think what would have happened if I'd waited until Monday.",
+      "name": "Anita Sarris",
+      "suburb": "Bulimba",
+      "job": "Emergency callout"
+    },
+    {
+      "text": "We needed the interconnected smoke alarms done before settlement and had left it far too late. Jess fitted them the next morning and had the paperwork through to our conveyancer by lunch. Completely painless.",
+      "name": "Tom and Beth Kiernan",
+      "suburb": "Balmoral",
+      "job": "Smoke alarm compliance"
+    },
+    {
+      "text": "Quoted us for an EV charger and then told us we didn't need the more expensive three phase option we'd been recommended elsewhere. Saved us about two grand. That's the sort of thing that gets you recommended to the whole street.",
+      "name": "Priyanka Devi",
+      "suburb": "Morningside",
+      "job": "EV charger installation"
+    }
+  ],
+
+  "faq": [
+    {
+      "q": "Do I get a certificate when the work is done?",
+      "a": "Yes, always. Queensland law requires a Certificate of Testing for electrical work, and we issue one on every job without being asked. Keep it — you'll need it when you sell, and your insurer may ask for it after any incident."
+    },
+    {
+      "q": "How much does a switchboard upgrade actually cost?",
+      "a": "Most single phase domestic upgrades land between $1,450 and $2,400 depending on the number of circuits, whether the main switch and meter need work, and whether there's asbestos backing behind the old board. We give a fixed price after seeing it, not a range."
+    },
+    {
+      "q": "Can you work with my builder or do I need to organise everything?",
+      "a": "We work directly with builders and project managers on most renovation jobs. Give them our number and we'll deal with scheduling, rough-in timing and inspections. You only get involved for decisions that are actually yours to make, like where the lights go."
+    },
+    {
+      "q": "Is an emergency callout worth it, or should I wait until morning?",
+      "a": "Call us and we'll tell you honestly, at no charge. Burning smells, visible arcing, water in a switchboard or a hot power point are genuine emergencies — turn the power off at the main switch and ring. A single dead circuit with no other symptoms can usually wait."
+    },
+    {
+      "q": "Do you charge for quotes?",
+      "a": "Not for standard domestic work. Larger renovation and commercial jobs that need a detailed take-off may carry a design fee, which we credit back against the job if you go ahead. We'll tell you before we start, never after."
+    },
+    {
+      "q": "What areas do you cover?",
+      "a": "Brisbane's inner east, roughly everything within fifteen minutes of Bulimba. We'll travel further for larger jobs — ask and we'll tell you straight away whether it makes sense."
+    }
+  ],
+
+  "suburbs": ["Bulimba", "Hawthorne", "Balmoral", "Morningside", "Norman Park", "Cannon Hill", "Camp Hill", "New Farm", "Teneriffe", "Coorparoo"]
+};
+
+/* Safety check questions. These are expert content, not client content,
+   so they live here rather than in content.json. */
+var QUIZ = [
+  { q:"Does your switchboard still have ceramic fuses — the white porcelain ones you pull out and rewire?",
+    risk:"yes", weight:2,
+    flagYes:"Ceramic fuses are decades past their use-by date and offer no protection against electric shock." },
+  { q:"Do you have safety switches protecting the lighting circuits, not just the power points?",
+    risk:"no", weight:2,
+    flagNo:"Lighting circuits without RCD protection are one of the most common gaps we find in Queensland homes." },
+  { q:"Are your smoke alarms photoelectric and interconnected, so all of them sound at once?",
+    risk:"no", weight:2,
+    flagNo:"Interconnected photoelectric alarms are already required for sold and leased homes, and for every home by 2027." },
+  { q:"In the last six months, have circuit breakers tripped or lights flickered without an obvious reason?",
+    risk:"yes", weight:1,
+    flagYes:"Repeated tripping is a symptom, not a fault in itself. Something is causing it and it's worth tracing." },
+  { q:"Has the switchboard been upgraded or professionally inspected in the last twenty years?",
+    risk:"no", weight:1,
+    flagNo:"Twenty years covers several changes to the wiring rules. An inspection is inexpensive and tells you where you stand." },
+  { q:"Can you see any fabric or rubber-covered wiring in the roof space or under the house?",
+    risk:"yes", weight:3,
+    flagYes:"Rubber and cloth insulation goes brittle with age and is a genuine fire risk. This one shouldn't wait." }
+];
+
+var BANDS = [
+  { max:0, cls:"low",  label:"Looks in good shape",
+    head:"Nothing here suggests an urgent problem.",
+    body:"Based on your answers, your wiring and protection sound like they've been looked after. Worth a professional inspection every ten years or so, and any time you buy a house — but there's nothing here that needs a phone call today.",
+    cta:"Book a routine inspection" },
+  { max:3, cls:"mid",  label:"Worth a look",
+    head:"A couple of things are worth sorting out.",
+    body:"Nothing you've described is an emergency, but there are gaps that are cheap to close now and expensive to ignore. Most homes in this range need a half-day visit and land somewhere between $300 and $900.",
+    cta:"Book a safety inspection" },
+  { max:6, cls:"mid",  label:"Book an inspection",
+    head:"Your home has several gaps worth closing.",
+    body:"This combination usually means a switchboard that's behind current standards. A full inspection takes about an hour and gives you a written list of what's urgent, what can wait, and what it all costs — no obligation to do any of it with us.",
+    cta:"Book a full inspection" },
+  { max:99, cls:"high", label:"Don't leave this",
+    head:"We'd want to look at this fairly soon.",
+    body:"Several of your answers point to protection that's well behind current standards, and at least one of them is a genuine fire or shock risk. This isn't scaremongering — it's the sort of thing we find and fix most weeks. Call us and we'll tell you honestly how quickly it needs doing.",
+    cta:"Call us today" }
+];
+
+(function(){
+'use strict';
+var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var C = DEFAULT_CONTENT;
+
+function $(s,r){ return (r||document).querySelector(s); }
+function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function esc(t){ var d=document.createElement('div'); d.textContent=t==null?'':String(t); return d.innerHTML; }
+function dig(o,p){ return p.split('.').reduce(function(a,k){ return a&&a[k]; }, o); }
+var TICK='<svg viewBox="0 0 24 24"><path d="m4 12.5 5.5 5.5L20 6.5"/></svg>';
+
+/* ---------- content loading ---------- */
+function loadContent(){
+  return new Promise(function(resolve){
+    var local=null;
+    try{ local=JSON.parse(localStorage.getItem('copperline-content')); }catch(e){}
+    if(local && local.business) return resolve(local);
+    fetch('content.json',{cache:'no-store'})
+      .then(function(r){ return r.ok?r.json():null; })
+      .then(function(j){ resolve(j && j.business ? j : DEFAULT_CONTENT); })
+      .catch(function(){ resolve(DEFAULT_CONTENT); });
+  });
+}
+
+/* ---------- render ---------- */
+function render(){
+  var b=C.business;
+  $$('[data-bind]').forEach(function(el){
+    var v=dig(C, el.getAttribute('data-bind'));
+    if(v!=null) el.textContent=v;
+  });
+  document.title = b.name + ' — Electrician in ' + b.suburb.replace(/ QLD.*/,'') + ', Brisbane';
+
+  /* hero */
+  var head=C.hero.headline, fw=C.hero.flickerWord;
+  $('#heroHeadline').innerHTML = (fw && head.indexOf(fw)>-1)
+    ? esc(head).replace(esc(fw), '<span class="flick">'+esc(fw)+'</span>')
+    : esc(head);
+  $('#heroLede').textContent = C.hero.lede;
+  var call=$('#heroCall'); call.href='tel:'+b.phoneLink; call.textContent='Call '+b.phone;
+  $('#heroAvail').textContent = C.availability.responseTime + ' for emergencies';
+
+  /* stats */
+  $('#statRow').innerHTML = C.hero.stats.map(function(s){
+    return '<div class="stat"><b data-count="'+esc(s.value)+'" data-suffix="'+esc(s.suffix||'')+'">'+
+      esc(s.value+(s.suffix||''))+'</b><span>'+esc(s.label)+'</span></div>';
+  }).join('');
+
+  /* credentials */
+  $('#credRow').innerHTML = C.credentials.map(function(c){
+    return '<span class="cred">'+TICK+esc(c)+'</span>';
+  }).join('');
+
+  /* service tabs */
+  $('#tabnav').innerHTML = C.categories.map(function(cat,i){
+    return '<button role="tab" aria-selected="'+(i===0)+'" data-tab="'+i+'">'+esc(cat.name)+'</button>';
+  }).join('');
+  $('#tabpanes').innerHTML = C.categories.map(function(cat,i){
+    return '<div class="tabpane'+(i===0?' on':'')+'" data-pane="'+i+'">'+
+      '<p class="cat-blurb">'+esc(cat.blurb)+'</p>'+
+      '<div class="svc-grid">'+cat.items.map(function(s){
+        return '<article class="svc"><h3>'+esc(s.title)+'</h3><p>'+esc(s.blurb)+'</p>'+
+          '<div class="svc-price"><b>'+esc(s.price)+'</b><span>'+esc(s.priceNote||'')+'</span></div></article>';
+      }).join('')+'</div></div>';
+  }).join('');
+  $$('#tabnav button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      $$('#tabnav button').forEach(function(x){ x.setAttribute('aria-selected','false'); });
+      btn.setAttribute('aria-selected','true');
+      $$('.tabpane').forEach(function(p){ p.classList.toggle('on', p.dataset.pane===btn.dataset.tab); });
+    });
+  });
+
+  /* rates */
+  $('#rateList').innerHTML = C.rates.map(function(r){
+    return '<div class="rate"><b>'+esc(r.label)+'</b><span class="amt">'+esc(r.amount)+'</span><p>'+esc(r.note)+'</p></div>';
+  }).join('');
+  $('#fixedList').innerHTML = C.fixedPrices.map(function(f){
+    return '<div class="fx"><span>'+esc(f.job)+'</span><b>'+esc(f.price)+'</b></div>';
+  }).join('');
+
+  /* team */
+  $('#crewList').innerHTML = C.team.map(function(p){
+    return '<div class="person"><div class="face"><span>'+esc(p.initials)+'</span></div>'+
+      '<div><h3>'+esc(p.name)+'</h3><div class="role">'+esc(p.role)+'</div>'+
+      '<div class="lic">'+esc(p.licence||'')+'</div><p>'+esc(p.bio)+'</p></div></div>';
+  }).join('');
+
+  /* reviews */
+  $('#quoteStage').innerHTML = C.reviews.map(function(r,i){
+    return '<div class="quotecard'+(i===0?' on':'')+'" data-q="'+i+'">'+
+      '<blockquote>'+esc(r.text)+'</blockquote>'+
+      '<div class="qmeta"><b>'+esc(r.name)+'</b><span>'+esc(r.suburb)+'</span><span>'+esc(r.job)+'</span></div></div>';
+  }).join('');
+  $('#qnav').innerHTML = C.reviews.map(function(r,i){
+    return '<button class="qdot'+(i===0?' on':'')+'" data-go="'+i+'" aria-label="Review '+(i+1)+'"></button>';
+  }).join('') +
+  '<button class="qarrow" id="qPrev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></button>'+
+  '<button class="qarrow" id="qNext" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>';
+  wireQuotes();
+
+  /* contact */
+  $('#mapLink').href=b.mapUrl;
+  $('#sosNote').textContent = C.availability.emergencyNote;
+  var sos=$('#sosCall'); sos.href='tel:'+b.phoneLink; sos.textContent='Call '+b.phone;
+  $('#areaList').innerHTML = C.suburbs.map(function(s){ return '<span>'+esc(s)+'</span>'; }).join('');
+  $('#faqList').innerHTML = C.faq.map(function(f){
+    return '<details><summary>'+esc(f.q)+'</summary><p class="ans">'+esc(f.a)+'</p></details>';
+  }).join('');
+
+  /* footer */
+  var fp=$('#footPhone'); fp.href='tel:'+b.phoneLink; fp.textContent=b.phone;
+  var fe=$('#footEmail'); fe.href='mailto:'+b.email; fe.textContent=b.email;
+  $('#footServices').innerHTML = C.categories.map(function(c){
+    return '<li><a href="#services">'+esc(c.name)+'</a></li>';
+  }).join('');
+  $('#footAreas').innerHTML = C.suburbs.slice(0,6).map(function(s){ return '<li>'+esc(s)+'</li>'; }).join('');
+  $('#legal').innerHTML = ['ABN '+esc(b.abn),'Electrical Contractor Licence '+esc(b.licence),
+    esc(b.membership),'&copy; '+new Date().getFullYear()+' '+esc(b.name)]
+    .map(function(t){ return '<span>'+t+'</span>'; }).join('');
+
+  renderHours();
+  countdown();
+}
+
+/* ---------- hours ---------- */
+function toMins(t){ var p=(t||'').split(':'); return (+p[0])*60+(+p[1]); }
+function fmt(m){
+  var h=Math.floor(m/60), mm=m%60, ap=h>=12?'pm':'am', h12=h%12===0?12:h%12;
+  return h12+(mm?':'+String(mm).padStart(2,'0'):'')+ap;
+}
+function renderHours(){
+  $('#hoursList').innerHTML = C.hours.map(function(h){
+    return '<div><span>'+esc(h.day)+'</span><span>'+
+      (h.closed?'Closed':fmt(toMins(h.open))+' – '+fmt(toMins(h.close)))+'</span></div>';
+  }).join('');
+}
+function bneDay(){
+  var parts={};
+  new Intl.DateTimeFormat('en-AU',{timeZone:'Australia/Brisbane',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false})
+    .formatToParts(new Date()).forEach(function(p){ parts[p.type]=p.value; });
+  return {
+    day:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.weekday.slice(0,3)),
+    mins:parseInt(parts.hour,10)*60+parseInt(parts.minute,10)
+  };
+}
+function updateOnCall(){
+  var now=bneDay(), row=C.hours[(now.day+6)%7];
+  var open = row && !row.closed && now.mins>=toMins(row.open) && now.mins<toMins(row.close);
+  $('#oncallText').textContent = open ? 'Office open until '+fmt(toMins(row.close)) : '24 hour emergency line';
+  $$('#hoursList div').forEach(function(el,i){ el.classList.toggle('today', i===(now.day+6)%7); });
+}
+function countdown(){
+  var el=$('#countdown'); if(!el) return;
+  var target=new Date('2027-01-01T00:00:00+10:00');
+  var days=Math.ceil((target-new Date())/86400000);
+  el.textContent = days>0 ? days.toLocaleString('en-AU')+' days' : 'In effect';
+}
+
+/* ---------- reviews rotator ---------- */
+var qIdx=0, qTimer=null;
+function wireQuotes(){
+  var cards=$$('.quotecard'), dots=$$('.qdot');
+  function go(n){
+    qIdx=(n+cards.length)%cards.length;
+    cards.forEach(function(c,i){ c.classList.toggle('on', i===qIdx); });
+    dots.forEach(function(d,i){ d.classList.toggle('on', i===qIdx); });
+  }
+  dots.forEach(function(d){ d.addEventListener('click', function(){ go(+d.dataset.go); restart(); }); });
+  $('#qPrev').addEventListener('click', function(){ go(qIdx-1); restart(); });
+  $('#qNext').addEventListener('click', function(){ go(qIdx+1); restart(); });
+  function restart(){ if(qTimer) clearInterval(qTimer); if(!reduced) qTimer=setInterval(function(){ go(qIdx+1); }, 7000); }
+  restart();
+}
+
+/* ---------- safety check ---------- */
+var qStep=0, answers=[];
+function drawCheck(){
+  var shell=$('#checkShell');
+  if(qStep>=QUIZ.length) return drawResult();
+  var q=QUIZ[qStep];
+  shell.innerHTML =
+    '<div class="qstage">'+
+      '<div class="qbar"><i style="width:'+((qStep/QUIZ.length)*100)+'%"></i></div>'+
+      '<span class="qcount">Question '+(qStep+1)+' of '+QUIZ.length+'</span>'+
+      '<p class="qtext">'+esc(q.q)+'</p>'+
+      '<div class="qopts">'+
+        '<button data-a="yes">Yes</button>'+
+        '<button data-a="no">No</button>'+
+        '<button data-a="unsure">Not sure</button>'+
+      '</div>'+
+      (qStep>0?'<button class="qback">Back a question</button>':'')+
+    '</div>';
+  $$('.qopts button',shell).forEach(function(btn){
+    btn.addEventListener('click', function(){
+      answers[qStep]=btn.dataset.a; qStep++; drawCheck();
+    });
+  });
+  var back=$('.qback',shell);
+  if(back) back.addEventListener('click', function(){ qStep--; drawCheck(); });
+}
+function drawResult(){
+  var score=0, flags=[];
+  QUIZ.forEach(function(q,i){
+    var a=answers[i];
+    if(a===q.risk){ score+=q.weight; flags.push(q.risk==='yes'?q.flagYes:q.flagNo); }
+    else if(a==='unsure'){ score+=1; }
+  });
+  var band=BANDS.find(function(b){ return score<=b.max; });
+  $('#checkShell').innerHTML =
+    '<div class="qstage result">'+
+      '<div class="qbar"><i style="width:100%"></i></div>'+
+      '<span class="badge '+band.cls+'">'+esc(band.label)+'</span>'+
+      '<h3>'+esc(band.head)+'</h3>'+
+      '<p style="color:var(--slate)">'+esc(band.body)+'</p>'+
+      (flags.length?'<ul class="flags">'+flags.map(function(f){
+        return '<li>'+TICK+'<span>'+esc(f)+'</span></li>';
+      }).join('')+'</ul>':'')+
+      '<div class="result-actions">'+
+        '<a class="btn copper" href="#booking">'+esc(band.cta)+'</a>'+
+        '<button class="btn line" id="qRestart" type="button">Start again</button>'+
+      '</div>'+
+    '</div>';
+  $('#qRestart').addEventListener('click', function(){ qStep=0; answers=[]; drawCheck(); });
+}
+
+/* ---------- form ---------- */
+function wireForm(){
+  var form=$('#bookForm'), btn=$('#submitBtn'), err=$('#formErr');
+  $('#confirmText').innerHTML='Thanks — that\u2019s come through. We\u2019ll be in touch shortly to confirm a time and a price. If it can\u2019t wait, call <a href="tel:'+C.business.phoneLink+'" style="color:var(--cobalt)">'+esc(C.business.phone)+'</a>.';
+
+  function fail(m){ err.textContent=m; err.classList.add('show'); btn.disabled=false; btn.innerHTML='Send this through'; }
+  function done(){ form.style.display='none'; $('#confirm').classList.add('show'); }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault(); err.classList.remove('show');
+    var name=$('#fname'), phone=$('#fphone');
+    [name,phone].forEach(function(f){ f.classList.remove('bad'); });
+    var bad = !name.value.trim() ? name : (phone.value.replace(/\D/g,'').length<8 ? phone : null);
+    if(bad){ bad.classList.add('bad'); bad.focus(); return fail('We need a name and a mobile we can reach you on.'); }
+
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span>Sending…';
+    var fd=new FormData(form), lines=[];
+    fd.forEach(function(v,k){ if(k!=='botcheck'&&v) lines.push(k+': '+v); });
+
+    if(CONFIG.FORM_ACCESS_KEY){
+      fd.append('access_key', CONFIG.FORM_ACCESS_KEY);
+      fd.append('subject','New enquiry — '+fd.get('Job type')+' — '+fd.get('Name'));
+      fd.append('from_name', C.business.name+' website');
+      fetch('https://api.web3forms.com/submit',{method:'POST',body:fd})
+        .then(function(r){ return r.json(); })
+        .then(function(j){ j.success?done():fail('That didn\u2019t send. Please call '+C.business.phone+'.'); })
+        .catch(function(){ fail('Couldn\u2019t reach the server. Please call '+C.business.phone+'.'); });
+    } else {
+      if (CONFIG.FALLBACK_EMAIL) window.location.href='mailto:'+CONFIG.FALLBACK_EMAIL+
+        '?subject='+encodeURIComponent('Website enquiry — '+fd.get('Name'))+
+        '&body='+encodeURIComponent(lines.join('\n'));
+      setTimeout(done,700);
+    }
+  });
+}
+
+/* ---------- motion ---------- */
+function wireMotion(){
+  var fill=$('#cable i'), hdr=$('#hdr'), up=$('#up'), ticking=false;
+  function onScroll(){
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(function(){
+      var max=document.documentElement.scrollHeight-window.innerHeight, y=window.scrollY;
+      fill.style.transform='scaleY('+(max>0?y/max:0)+')';
+      hdr.classList.toggle('stuck', y>30);
+      up.classList.toggle('show', y>900);
+      ticking=false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  up.addEventListener('click', function(){ window.scrollTo({top:0,behavior:reduced?'auto':'smooth'}); });
+
+  if('IntersectionObserver' in window && !reduced){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(!en.isIntersecting) return;
+        var sibs=Array.prototype.slice.call(en.target.parentNode.children).filter(function(n){ return n.classList.contains('rv'); });
+        en.target.style.transitionDelay=(Math.min(sibs.indexOf(en.target),6)*0.07)+'s';
+        en.target.classList.add('in'); io.unobserve(en.target);
+      });
+    },{rootMargin:'0px 0px -10% 0px',threshold:.08});
+    $$('.rv').forEach(function(el){ io.observe(el); });
+  } else { $$('.rv').forEach(function(el){ el.classList.add('in'); }); }
+
+  var ids=['services','alarms','check','rates','team'];
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(!en.isIntersecting) return;
+        $$('#nav a').forEach(function(a){ a.classList.toggle('active', a.getAttribute('href')==='#'+en.target.id); });
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    ids.forEach(function(id){ var el=document.getElementById(id); if(el) so.observe(el); });
+  }
+}
+function countUp(){
+  $$('[data-count]').forEach(function(el){
+    var t=parseFloat(el.dataset.count); if(isNaN(t)) return;
+    var dec=(el.dataset.count.split('.')[1]||'').length, suf=el.dataset.suffix||'';
+    if(reduced){ el.textContent=t.toFixed(dec)+suf; return; }
+    var s=performance.now(), d=1200;
+    (function step(now){
+      var p=Math.min((now-s)/d,1), e=1-Math.pow(1-p,3);
+      el.textContent=(t*e).toFixed(dec)+suf;
+      if(p<1) requestAnimationFrame(step);
+    })(s);
+  });
+}
+
+/* ---------- go ---------- */
+loadContent().then(function(loaded){
+  C=loaded;
+  render(); wireForm(); wireMotion(); drawCheck();
+  updateOnCall(); setInterval(updateOnCall, 60000);
+
+  function lightUp(){
+    document.body.classList.add('lit');
+    setTimeout(function(){ document.body.classList.add('done'); }, 700);
+    setTimeout(countUp, 900);
+  }
+  if(document.readyState==='complete') setTimeout(lightUp, 80);
+  else window.addEventListener('load', function(){ setTimeout(lightUp, 80); });
+  setTimeout(lightUp, 2500);
+});
+})();
+</script>
+</body>
+</html>

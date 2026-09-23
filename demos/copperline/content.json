@@ -1,0 +1,190 @@
+{
+  "business": {
+    "name": "Copperline Electrical",
+    "shortName": "Copperline",
+    "suburb": "Bulimba QLD",
+    "established": "2009",
+    "phone": "(07) 3399 2074",
+    "phoneLink": "+61733992074",
+    "email": "office@copperlineelectrical.com.au",
+    "addressLine1": "7/184 Oxford Street",
+    "addressLine2": "Bulimba QLD 4171",
+    "directions": "Upstairs, above the bakery. Parking off Godwin Street.",
+    "mapUrl": "https://maps.google.com/?q=Oxford+Street+Bulimba+QLD",
+    "licence": "86114",
+    "abn": "64 197 402 118",
+    "membership": "Master Electricians Australia"
+  },
+
+  "hero": {
+    "headline": "Electrical work that gets signed off, not just finished.",
+    "flickerWord": "signed off",
+    "lede": "Switchboard upgrades, rewires, smoke alarm compliance and EV chargers across Brisbane's inner east. Licensed, insured, and certified on completion — every single job.",
+    "stats": [
+      { "value": "17", "suffix": "", "label": "Years on the tools in Brisbane" },
+      { "value": "2", "suffix": " hr", "label": "Average emergency response" },
+      { "value": "100", "suffix": "%", "label": "Jobs certified on completion" },
+      { "value": "5", "suffix": " yr", "label": "Workmanship warranty" }
+    ]
+  },
+
+  "availability": {
+    "emergencyNote": "Power out, burning smell, or sparks? Call now — we answer 24 hours.",
+    "responseTime": "Within 2 hours, most of the time",
+    "nextAvailable": "auto"
+  },
+
+  "credentials": [
+    "Electrical Contractor Licence 86114",
+    "Master Electricians Australia",
+    "$20m public liability",
+    "Certificate of Testing on every job",
+    "5 year workmanship warranty"
+  ],
+
+  "hours": [
+    { "day": "Monday",    "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Tuesday",   "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Wednesday", "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Thursday",  "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Friday",    "open": "06:30", "close": "16:30", "closed": false },
+    { "day": "Saturday",  "open": "07:30", "close": "12:00", "closed": false },
+    { "day": "Sunday",    "open": "",      "close": "",      "closed": true  }
+  ],
+
+  "categories": [
+    {
+      "name": "Around the house",
+      "blurb": "The everyday work that keeps a home safe and working properly.",
+      "items": [
+        { "title": "Switchboard upgrades", "blurb": "Ceramic fuses and old boards replaced with a modern enclosure, RCBOs on every circuit and room to grow. Usually a day's work.", "price": "$1,450", "priceNote": "from, supplied and installed" },
+        { "title": "Safety switches (RCDs)", "blurb": "Queensland homes need them on power and lighting circuits. If yours only covers the power points, half your house is unprotected.", "price": "$295", "priceNote": "from, per circuit" },
+        { "title": "Lighting and LED upgrades", "blurb": "Downlight replacements, feature and outdoor lighting, dimming that actually works with the fittings you chose.", "price": "$85", "priceNote": "per downlight, from" },
+        { "title": "Power points and USB outlets", "blurb": "New outlets, relocations, weatherproof externals, and the double-with-USB everyone asks for in the kitchen.", "price": "$165", "priceNote": "from, per point" },
+        { "title": "Ceiling fans", "blurb": "Supply and install, or fit the one you've already bought. Includes wall control and existing point check.", "price": "$180", "priceNote": "installation, from" },
+        { "title": "Fault finding", "blurb": "Breakers that trip, lights that flicker, a circuit that's dead. We trace it properly rather than guessing and replacing parts.", "price": "$99", "priceNote": "first 30 minutes" }
+      ]
+    },
+    {
+      "name": "Renovations & rewires",
+      "blurb": "Working alongside builders, architects and owners on jobs that need planning, not just a spanner.",
+      "items": [
+        { "title": "Full and partial rewires", "blurb": "Old rubber or cloth-insulated wiring replaced throughout. We stage it so you can stay living in the house wherever possible.", "price": "$8,500", "priceNote": "from, typical three bedroom" },
+        { "title": "Renovation rough-in and fit-off", "blurb": "Planned with your builder from the frame stage. Every point marked up and agreed before a cable is pulled.", "price": "Quoted", "priceNote": "per plan" },
+        { "title": "Lighting design", "blurb": "Layouts, circuit grouping and switching planned room by room. Far cheaper to think about before the plasterboard goes on.", "price": "$450", "priceNote": "design fee, credited to the job" },
+        { "title": "Kitchen and bathroom fit-outs", "blurb": "Appliance circuits, rangehoods, heated towel rails, exhaust fans, and the dedicated circuits induction cooktops need.", "price": "Quoted", "priceNote": "after site visit" },
+        { "title": "Data, TV and network", "blurb": "Cat6 runs, wall plates, TV points and patch panels — done at rough-in when it costs a fraction of retrofitting.", "price": "$220", "priceNote": "from, per outlet" }
+      ]
+    },
+    {
+      "name": "Solar & EV",
+      "blurb": "The newer end of the trade, done by people who've actually been trained on it.",
+      "items": [
+        { "title": "EV charger installation", "blurb": "7kW single phase or 22kW three phase, load-tested against your existing supply so you don't trip the main when the car and the oven run together.", "price": "$1,290", "priceNote": "from, 7kW installed" },
+        { "title": "Switchboard preparation for solar", "blurb": "Most older boards need work before an inverter can be connected. We do that part properly so your solar installer isn't improvising.", "price": "$690", "priceNote": "from" },
+        { "title": "Battery and inverter connection", "blurb": "Grid connection paperwork, isolation, and the metering changes Energex needs before anything is switched on.", "price": "Quoted", "priceNote": "per system" },
+        { "title": "Solar fault finding", "blurb": "System underperforming, inverter throwing errors, or export not showing on your bill. We test the electrical side independently of the installer.", "price": "$99", "priceNote": "first 30 minutes" }
+      ]
+    },
+    {
+      "name": "Commercial",
+      "blurb": "Shops, cafés, offices and body corporate work across the inner east.",
+      "items": [
+        { "title": "Shop and café fit-outs", "blurb": "Three phase, equipment circuits, emergency and exit lighting, and the certification your council inspection will ask for.", "price": "Quoted", "priceNote": "per project" },
+        { "title": "Test and tag", "blurb": "Scheduled appliance testing with a register you can actually hand to an auditor. Priced per item, cheaper in volume.", "price": "$4.50", "priceNote": "per item, from" },
+        { "title": "Emergency and exit lighting", "blurb": "Installation plus the six-monthly discharge testing AS 2293 requires, logged and certified.", "price": "$320", "priceNote": "from, per test cycle" },
+        { "title": "Thermal imaging", "blurb": "Switchboard scans that find failing connections before they fail. Insurers increasingly ask for these on commercial premises.", "price": "$480", "priceNote": "from, per board" }
+      ]
+    }
+  ],
+
+  "rates": [
+    { "label": "Standard call-out", "amount": "$99", "note": "Includes the first 30 minutes on site. Monday to Friday, 6:30am – 4:30pm." },
+    { "label": "Hourly rate after that", "amount": "$110", "note": "Charged in 15 minute blocks, not rounded up to the hour." },
+    { "label": "After hours and weekends", "amount": "$189", "note": "Call-out including the first 30 minutes. Saturday mornings are charged at the standard rate." },
+    { "label": "Emergency, same night", "amount": "$260", "note": "Call-out for genuine emergencies — no power, burning smell, water through a switchboard." }
+  ],
+
+  "fixedPrices": [
+    { "job": "Safety switch fitted to one circuit", "price": "$295" },
+    { "job": "Three interconnected smoke alarms supplied and fitted", "price": "$690" },
+    { "job": "Switchboard upgrade, single phase", "price": "$1,450" },
+    { "job": "LED downlight changeover, ten lights", "price": "$720" },
+    { "job": "Ceiling fan installed to an existing point", "price": "$180" },
+    { "job": "EV charger, 7kW, installed", "price": "$1,290" },
+    { "job": "Certificate of Testing reissued", "price": "$0" }
+  ],
+
+  "team": [
+    {
+      "initials": "RA",
+      "name": "Ryan Alcott",
+      "role": "Owner, electrical contractor",
+      "bio": "Seventeen years on the tools, the last nine running Copperline. Started out doing commercial fit-outs in the CBD before moving to residential and renovation work in the inner east. Does every quote personally, which is why he'll sometimes take a day to get back to you.",
+      "licence": "Licence 86114"
+    },
+    {
+      "initials": "JM",
+      "name": "Jess Moreau",
+      "role": "Electrician, solar and EV accredited",
+      "bio": "Came through a commercial apprenticeship and picked up solar and battery accreditation in 2021. Handles most of the EV charger and inverter work, and is the person who'll talk you out of an upgrade you don't actually need.",
+      "licence": "Licence 91720"
+    }
+  ],
+
+  "reviews": [
+    {
+      "text": "Ryan quoted a full rewire and was the only one of four sparkies who walked the roof space first. The quote was neither the cheapest nor the dearest, but it was the only one that didn't change halfway through the job. Finished on the day he said.",
+      "name": "Marcus Feld",
+      "suburb": "Hawthorne",
+      "job": "Full rewire, 1930s Queenslander"
+    },
+    {
+      "text": "Had a burning smell at 9pm on a Sunday. Someone answered the phone, talked me through killing the main switch, and was there inside ninety minutes. Turned out to be a cooked neutral in the switchboard. I dread to think what would have happened if I'd waited until Monday.",
+      "name": "Anita Sarris",
+      "suburb": "Bulimba",
+      "job": "Emergency callout"
+    },
+    {
+      "text": "We needed the interconnected smoke alarms done before settlement and had left it far too late. Jess fitted them the next morning and had the paperwork through to our conveyancer by lunch. Completely painless.",
+      "name": "Tom and Beth Kiernan",
+      "suburb": "Balmoral",
+      "job": "Smoke alarm compliance"
+    },
+    {
+      "text": "Quoted us for an EV charger and then told us we didn't need the more expensive three phase option we'd been recommended elsewhere. Saved us about two grand. That's the sort of thing that gets you recommended to the whole street.",
+      "name": "Priyanka Devi",
+      "suburb": "Morningside",
+      "job": "EV charger installation"
+    }
+  ],
+
+  "faq": [
+    {
+      "q": "Do I get a certificate when the work is done?",
+      "a": "Yes, always. Queensland law requires a Certificate of Testing for electrical work, and we issue one on every job without being asked. Keep it — you'll need it when you sell, and your insurer may ask for it after any incident."
+    },
+    {
+      "q": "How much does a switchboard upgrade actually cost?",
+      "a": "Most single phase domestic upgrades land between $1,450 and $2,400 depending on the number of circuits, whether the main switch and meter need work, and whether there's asbestos backing behind the old board. We give a fixed price after seeing it, not a range."
+    },
+    {
+      "q": "Can you work with my builder or do I need to organise everything?",
+      "a": "We work directly with builders and project managers on most renovation jobs. Give them our number and we'll deal with scheduling, rough-in timing and inspections. You only get involved for decisions that are actually yours to make, like where the lights go."
+    },
+    {
+      "q": "Is an emergency callout worth it, or should I wait until morning?",
+      "a": "Call us and we'll tell you honestly, at no charge. Burning smells, visible arcing, water in a switchboard or a hot power point are genuine emergencies — turn the power off at the main switch and ring. A single dead circuit with no other symptoms can usually wait."
+    },
+    {
+      "q": "Do you charge for quotes?",
+      "a": "Not for standard domestic work. Larger renovation and commercial jobs that need a detailed take-off may carry a design fee, which we credit back against the job if you go ahead. We'll tell you before we start, never after."
+    },
+    {
+      "q": "What areas do you cover?",
+      "a": "Brisbane's inner east, roughly everything within fifteen minutes of Bulimba. We'll travel further for larger jobs — ask and we'll tell you straight away whether it makes sense."
+    }
+  ],
+
+  "suburbs": ["Bulimba", "Hawthorne", "Balmoral", "Morningside", "Norman Park", "Cannon Hill", "Camp Hill", "New Farm", "Teneriffe", "Coorparoo"]
+}

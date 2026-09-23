@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website editor — Hush Home Cleaning</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..800&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mist:#F6F4FA;--lav:#E4DDF3;--lav-2:#D3C8EC;--plum:#26183A;--plum-2:#3B2A55;--plum-3:#5B4A74;--plum-4:#857999;
+  --violet:#6A48C9;--violet-pale:#EFEAFB;--lemon:#F4DC5A;--leaf:#2C9A74;--warn:#B02F2F;
+  --line:rgba(38,24,58,.12);--line-2:rgba(38,24,58,.22);
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{margin:0;background:var(--mist);color:var(--plum);font-family:'Figtree',system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100;font-weight:550;margin:0;letter-spacing:-.015em}
+h3{font-size:1.08rem}
+:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+
+#gate{position:fixed;inset:0;z-index:50;background:var(--plum);display:grid;place-items:center;padding:1.5rem}
+#gate .box{width:100%;max-width:340px;text-align:center}
+#gate svg{width:46px;height:46px;margin:0 auto 1rem}
+#gate h1{color:#fff;font-size:2rem;margin-bottom:.3rem}
+#gate p{color:#BDB1D6;margin:0 0 1.4rem}
+#gate input{width:100%;padding:.95rem;border-radius:14px;border:1.5px solid rgba(255,255,255,.2);background:var(--plum-2);color:#fff;font:600 1.1rem 'Figtree',sans-serif;text-align:center;letter-spacing:.2em}
+#gate input:focus{outline:none;border-color:var(--lemon)}
+#gateErr{color:#FF9D9D;font-size:.88rem;min-height:1.3em;margin-top:.7rem}
+
+header{position:sticky;top:0;z-index:20;background:var(--plum);color:#fff}
+.bar{max-width:1500px;margin:0 auto;padding:.8rem 1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.bar h1{font-size:1.25rem;margin-right:auto}
+.bar h1 small{display:block;font-family:'Figtree',sans-serif;font-size:.75rem;font-weight:500;color:#BDB1D6;letter-spacing:0}
+.saved{font-size:.82rem;color:#BDB1D6;min-width:6rem;text-align:right}
+.saved.ok{color:#8FE0BF}
+.tabs{background:var(--plum-2);overflow-x:auto}
+.tabs-in{max-width:1500px;margin:0 auto;display:flex;gap:.2rem;padding:.45rem 1.25rem}
+.tab{background:none;border:none;cursor:pointer;white-space:nowrap;font:600 .86rem 'Figtree',sans-serif;color:#CFC4E3;padding:.55rem .95rem;border-radius:999px}
+.tab:hover{color:#fff;background:rgba(255,255,255,.08)}
+.tab.on{background:var(--lemon);color:var(--plum)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.62rem 1.1rem;border:none;border-radius:999px;cursor:pointer;background:var(--violet);color:#fff;font:600 .87rem 'Figtree',sans-serif;text-decoration:none;transition:filter .15s,transform .15s}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:scale(.97)}
+.btn.dark{background:var(--plum)}
+.btn.lemon{background:var(--lemon);color:var(--plum)}
+.btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3)}
+.btn.soft{background:#fff;color:var(--plum);box-shadow:inset 0 0 0 1.5px var(--line-2)}
+.btn.danger{background:transparent;color:var(--warn);box-shadow:inset 0 0 0 1.5px rgba(176,47,47,.35)}
+.btn.sm{padding:.4rem .75rem;font-size:.8rem}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.spin{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+main{max-width:1500px;margin:0 auto;padding:1.5rem 1.25rem 6rem;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,430px);gap:1.75rem;align-items:start}
+@media (max-width:1150px){main{grid-template-columns:1fr}.preview{display:none}}
+.panel{display:none}
+.panel.on{display:block}
+.hint{background:#fff;border-left:4px solid var(--lemon);border-radius:0 12px 12px 0;padding:.9rem 1.1rem;font-size:.9rem;color:var(--plum-3);margin-bottom:1.2rem}
+.hint b{color:var(--plum)}
+.item{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.15rem;margin-bottom:.85rem}
+.sub{background:var(--mist);border:1px solid var(--line);border-radius:14px;padding:.9rem;margin-bottom:.6rem}
+.item-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.85rem}
+.item-head h3{margin-right:auto}
+.item-head .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--plum);color:var(--lemon);font-size:.72rem;font-weight:700;flex:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
+@media (max-width:760px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+.fld{margin-bottom:.7rem}
+label,.lab{display:block;font-size:.76rem;font-weight:650;color:var(--plum-3);margin-bottom:.25rem}
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=time],textarea{
+  width:100%;padding:.55rem .7rem;border:1.5px solid var(--line-2);border-radius:10px;background:#fff;color:var(--plum);font:inherit;font-size:.93rem
+}
+input:focus,textarea:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(106,72,201,.14)}
+textarea{min-height:74px;resize:vertical}
+.help{font-size:.76rem;color:var(--plum-4);margin-top:.25rem}
+.chk{display:inline-flex;align-items:center;gap:.4rem;font-size:.86rem;margin:.2rem .9rem .2rem 0;font-weight:500;color:var(--plum)}
+.chk input{width:16px;height:16px;accent-color:var(--violet)}
+.listrow{display:flex;gap:.45rem;align-items:center;margin-bottom:.4rem}
+.listrow input{flex:1}
+.addrow{display:flex;gap:.45rem;margin-top:.5rem}
+.addrow input{flex:1}
+.hoursrow{display:grid;grid-template-columns:110px 1fr 1fr 90px;gap:.6rem;align-items:end;margin-bottom:.4rem}
+@media (max-width:760px){.hoursrow{grid-template-columns:1fr 1fr}}
+.preview{position:sticky;top:120px}
+.prevbar{display:flex;gap:.5rem;align-items:center;margin-bottom:.6rem}
+.prevbar select{flex:1;padding:.45rem .6rem;border-radius:10px;border:1.5px solid var(--line-2);font:inherit;font-size:.86rem;background:#fff;color:var(--plum)}
+.phone{border:10px solid var(--plum);border-radius:30px;overflow:hidden;background:var(--plum);box-shadow:0 24px 50px -24px rgba(38,24,58,.45)}
+.phone iframe{display:block;width:100%;height:640px;border:none;background:var(--mist)}
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--plum);padding:.75rem 1.25rem}
+.savebar-in{max-width:1500px;margin:0 auto;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.savebar .msg{margin-right:auto;font-size:.85rem;color:#CFC4E3}
+.savebar .msg b{color:var(--lemon)}
+.ok{color:var(--leaf);font-weight:650}
+.bad{color:var(--warn);font-weight:650}
+.modal{position:fixed;inset:0;z-index:60;display:none;place-items:center;padding:1.25rem;background:rgba(38,24,58,.6)}
+.modal.on{display:grid}
+.modal-box{background:#fff;border-radius:20px;max-width:480px;width:100%;padding:1.6rem}
+.modal-box h2{font-size:1.5rem;margin-bottom:.5rem}
+.modal-box p{color:var(--plum-3);margin:0 0 1.2rem}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#6A48C9" d="M16 3.5c5 6 9 10.9 9 15.6a9 9 0 0 1-18 0C7 14.4 11 9.5 16 3.5z"/><path fill="#F4DC5A" d="M16 13.2l1.2 3.4 3.4 1.2-3.4 1.2L16 22.4l-1.2-3.4-3.4-1.2 3.4-1.2z"/></svg>
+    <h1>Website editor</h1>
+    <p>Enter your passcode to make changes.</p>
+    <input id="pass" type="password" inputmode="numeric" autocomplete="off" aria-label="Passcode" placeholder="••••">
+    <div id="gateErr" role="alert"></div>
+  </div>
+</div>
+
+<header>
+  <div class="bar">
+    <h1>Hush Home Cleaning<small>Website editor</small></h1>
+    <span class="saved" id="savedMsg"></span>
+    <a class="btn ghost sm" id="openSite" href="index.html?preview=1" target="_blank" rel="noopener">Open site with my changes</a>
+  </div>
+</header>
+<div class="tabs"><div class="tabs-in" id="tabs"></div></div>
+
+<main>
+  <div>
+    <section class="panel on" data-panel="prices">
+      <div class="hint"><b>Every price on the website comes from here.</b> The quick price on the home page, the "from" prices, the quote builder and the booking summary all update together. Prices are in dollars, times are in hours.</div>
+      <div id="svcPriceEditor"></div>
+      <div class="item">
+        <div class="item-head"><h3>Discounts for regular visits</h3></div>
+        <p class="help" style="margin:0 0 .8rem">Only apply to regular cleans. Deep and end of lease cleans are always one-off.</p>
+        <div id="freqEditor"></div>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Extras</h3></div>
+        <p class="help" style="margin:0 0 .8rem">Tick a clean to include that extra in it for free. It then shows as "Included" on the quote.</p>
+        <div id="extrasEditor"></div>
+        <button class="btn dark sm" id="addExtra" type="button">Add an extra</button>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Minimum and price promise</h3></div>
+        <div class="grid2">
+          <div class="fld"><label for="minPrice">Smallest visit you'll book ($)</label><input id="minPrice" type="number" min="0" step="1"></div>
+        </div>
+        <div class="fld"><label for="promise">Price promise, shown under every quote</label><textarea id="promise" data-path="pricing.promise"></textarea></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="details">
+      <div class="hint"><b>Phone, email, address and hours.</b> Changing the hours also changes the "office open" light on the booking page.</div>
+      <div class="item">
+        <div class="item-head"><h3>Business details</h3></div>
+        <div class="grid2">
+          <div class="fld"><label>Business name</label><input type="text" data-path="business.name"></div>
+          <div class="fld"><label>Short name (the logo)</label><input type="text" data-path="business.shortName"></div>
+          <div class="fld"><label>Phone, as shown</label><input type="text" data-path="business.phone"></div>
+          <div class="fld"><label>Phone, for dialling</label><input type="tel" data-path="business.phoneLink"><div class="help">Starts with +61, no spaces.</div></div>
+          <div class="fld"><label>Email</label><input type="email" data-path="business.email"></div>
+          <div class="fld"><label>Year started</label><input type="text" data-path="business.established"></div>
+          <div class="fld"><label>Address line 1</label><input type="text" data-path="business.addressLine1"></div>
+          <div class="fld"><label>Address line 2</label><input type="text" data-path="business.addressLine2"></div>
+          <div class="fld"><label>ABN</label><input type="text" data-path="business.abn"></div>
+          <div class="fld"><label>Insurance line</label><input type="text" data-path="business.insurance"></div>
+        </div>
+        <div class="fld"><label>How quickly you confirm bookings</label><input type="text" data-path="business.responseTime"></div>
+      </div>
+      <div class="item"><div class="item-head"><h3>Office hours</h3></div><div id="hoursEditor"></div></div>
+      <div class="item"><div class="item-head"><h3>Suburbs you clean in</h3></div><div id="suburbsEditor"></div></div>
+    </section>
+
+    <section class="panel" data-panel="home">
+      <div class="hint">The first thing anyone reads. Keep the headline to one plain sentence about what they get.</div>
+      <div class="item">
+        <div class="fld"><label>Headline</label><textarea data-path="hero.headline"></textarea></div>
+        <div class="fld"><label>Opening paragraph</label><textarea data-path="hero.lede"></textarea></div>
+      </div>
+      <div class="item"><div class="item-head"><h3>The four facts under the window</h3></div><div id="statsEditor"></div></div>
+      <div class="item"><div class="item-head"><h3>Questions people worry about</h3></div><div id="worriesEditor"></div><button class="btn dark sm" id="addWorry" type="button">Add a question</button></div>
+      <div class="item"><div class="item-head"><h3>The four steps</h3></div><div id="stepsEditor"></div></div>
+      <div class="item"><div class="item-head"><h3>Guarantees</h3></div><div id="guaranteesEditor"></div></div>
+    </section>
+
+    <section class="panel" data-panel="services">
+      <div class="hint">How each kind of clean is described. Prices for these live under <b>Prices</b>.</div>
+      <div id="servicesEditor"></div>
+    </section>
+
+    <section class="panel" data-panel="rooms">
+      <div class="hint"><b>The room-by-room checklist.</b> A deep clean shows everything in "every clean" plus its own list, and an end of lease clean shows all three.</div>
+      <div id="roomsEditor"></div>
+    </section>
+
+    <section class="panel" data-panel="team">
+      <div class="hint">Initials show in the shape on each card. Send photos over and they can replace the initials.</div>
+      <div id="teamEditor"></div>
+      <button class="btn dark" id="addMate" type="button">Add a cleaner</button>
+    </section>
+
+    <section class="panel" data-panel="trust">
+      <div class="hint">The reasons people trust you, the note from the founder, and the things you don't do.</div>
+      <div class="item"><div class="item-head"><h3>Reasons to trust you</h3></div><div id="pillarsEditor"></div><button class="btn dark sm" id="addPillar" type="button">Add a reason</button></div>
+      <div class="item">
+        <div class="item-head"><h3>Note from the founder</h3></div>
+        <div class="grid2">
+          <div class="fld"><label>Name</label><input type="text" data-path="founder.name"></div>
+          <div class="fld"><label>Role</label><input type="text" data-path="founder.role"></div>
+        </div>
+        <div class="fld"><label>The note</label><textarea data-path="founder.note" style="min-height:140px"></textarea></div>
+      </div>
+      <div class="item"><div class="item-head"><h3>What you don't do</h3></div><div id="dontEditor"></div></div>
+    </section>
+
+    <section class="panel" data-panel="reviews">
+      <div class="hint">Only use reviews people actually left you, copied word for word.</div>
+      <div id="reviewsEditor"></div>
+      <button class="btn dark" id="addReview" type="button">Add a review</button>
+    </section>
+
+    <section class="panel" data-panel="faq">
+      <div class="hint">Shown on the booking page. Every question answered here is one less phone call.</div>
+      <div id="faqEditor"></div>
+      <button class="btn dark" id="addFaq" type="button">Add a question</button>
+    </section>
+
+    <section class="panel" data-panel="publish">
+      <div class="hint">Your changes are saved on this device as you type. Publishing puts them on the live website for everyone.</div>
+      <div class="item">
+        <div class="item-head"><h3>Publish to the live site</h3></div>
+        <p style="margin:0;color:var(--plum-3)">It's usually live within about a minute.</p>
+        <div class="actions"><button class="btn" id="doPublish" type="button">Publish now</button></div>
+        <p id="pubStatus" style="margin:.9rem 0 0"></p>
+      </div>
+      <div class="item">
+        <div class="item-head"><h3>Or send the file to your web person</h3></div>
+        <p style="margin:0;color:var(--plum-3)">Download your changes as a file and email it over. They'll upload it for you.</p>
+        <div class="actions">
+          <button class="btn dark" id="download" type="button">Download content.json</button>
+          <button class="btn danger" id="reset" type="button">Undo all my changes</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="preview">
+    <div class="prevbar">
+      <select id="prevPage" aria-label="Page to preview">
+        <option value="index.html">Home</option>
+        <option value="services.html">What we clean</option>
+        <option value="pricing.html">Prices</option>
+        <option value="about.html">Our cleaners</option>
+        <option value="book.html">Book</option>
+      </select>
+      <button class="btn soft sm" id="refreshPrev" type="button">Refresh</button>
+    </div>
+    <div class="phone"><iframe id="prev" title="Preview of the website" src="index.html"></iframe></div>
+  </aside>
+</main>
+
+<div class="savebar">
+  <div class="savebar-in">
+    <span class="msg">Saved on this device as you type. Go to <b>Publish</b> to put changes live.</span>
+    <button class="btn lemon" id="jumpPublish" type="button">Publish changes</button>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box" id="modalBox"></div></div>
+
+<script>
+(() => {
+'use strict';
+
+/* This stops a customer wandering in. It isn't real security: anyone can
+   read this file. The same passcode must be set as ADMIN_PASSCODE in Netlify,
+   and that one does protect publishing. */
+const PASSCODE = '5829';
+const STORE = 'hush-content';
+
+let data = null, original = null;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = t => { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; };
+const dig = (o, p) => p.split('.').reduce((a, k) => (a == null ? a : a[k]), o);
+const put = (o, p, v) => { const ks = p.split('.'), last = ks.pop(); ks.reduce((a, k) => (a[k] = a[k] || {}), o)[last] = v; };
+const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+
+/* ---------- gate ---------- */
+const gate = $('#gate'), pass = $('#pass');
+if (sessionStorage.getItem('hush-auth') === '1') gate.hidden = true;
+else setTimeout(() => pass.focus(), 150);
+pass.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (pass.value === PASSCODE) { sessionStorage.setItem('hush-auth', '1'); gate.hidden = true; }
+  else { $('#gateErr').textContent = "That's not the passcode. Try again."; pass.value = ''; }
+});
+
+/* ---------- load ---------- */
+fetch('content.json', { cache: 'no-store' })
+  .then(r => (r.ok ? r.json() : Promise.reject()))
+  .then(j => { original = clone(j); start(j); })
+  .catch(() => {
+    $('main').innerHTML = '<div class="hint" style="border-color:var(--warn)"><b>This page can\u2019t read content.json.</b> Open it through the website\u2019s address rather than by double-clicking the file. To try it on your own computer, run <code>python3 -m http.server</code> in this folder and go to <code>localhost:8000/admin.html</code>.</div>';
+  });
+function clone(o) { return JSON.parse(JSON.stringify(o)); }
+function start(j) {
+  let local = null;
+  try { local = JSON.parse(localStorage.getItem(STORE)); } catch (e) { /* ignore */ }
+  data = local && local.business ? local : j;
+  buildTabs(); bindFields(); renderAll();
+}
+
+/* ---------- tabs ---------- */
+const TABS = [['prices', 'Prices'], ['details', 'Details and hours'], ['home', 'Home page'], ['services', 'Kinds of clean'],
+  ['rooms', 'Room checklists'], ['team', 'Cleaners'], ['trust', 'Trust and honesty'], ['reviews', 'Reviews'], ['faq', 'Questions'], ['publish', 'Publish']];
+function buildTabs() {
+  $('#tabs').innerHTML = TABS.map(([k, l], i) => `<button class="tab${i === 0 ? ' on' : ''}" type="button" data-tab="${k}">${esc(l)}</button>`).join('');
+  $$('.tab').forEach(b => b.addEventListener('click', () => goTab(b.dataset.tab)));
+}
+function goTab(k) {
+  $$('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === k));
+  $$('.panel').forEach(p => p.classList.toggle('on', p.dataset.panel === k));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#jumpPublish').addEventListener('click', () => goTab('publish'));
+
+/* ---------- saving and preview ---------- */
+let t = null;
+function save() {
+  try { localStorage.setItem(STORE, JSON.stringify(data)); } catch (e) { /* ignore */ }
+  const m = $('#savedMsg'); m.textContent = 'Saved'; m.classList.add('ok');
+  clearTimeout(t);
+  t = setTimeout(() => { m.textContent = ''; m.classList.remove('ok'); refreshPrev(); }, 700);
+}
+function refreshPrev() { const f = $('#prev'); f.src = $('#prevPage').value + '?t=' + Date.now(); }
+$('#prevPage').addEventListener('change', refreshPrev);
+$('#refreshPrev').addEventListener('click', refreshPrev);
+
+function bindFields() {
+  $$('[data-path]').forEach(el => {
+    const v = dig(data, el.dataset.path);
+    el.value = v == null ? '' : v;
+    el.oninput = () => { put(data, el.dataset.path, el.value); save(); };
+  });
+  const mp = $('#minPrice');
+  mp.value = data.pricing.minimum;
+  mp.oninput = () => { data.pricing.minimum = num(mp.value); save(); };
+}
+
+/* ---------- builders ---------- */
+function field(label, val, set, type, attrs) {
+  const w = document.createElement('div'); w.className = 'fld';
+  const id = 'f' + Math.random().toString(36).slice(2, 9);
+  w.innerHTML = `<label for="${id}">${esc(label)}</label>`;
+  const i = document.createElement(type === 'area' ? 'textarea' : 'input');
+  i.id = id;
+  if (type !== 'area') i.type = type || 'text';
+  Object.assign(i, attrs || {});
+  i.value = val == null ? '' : val;
+  i.addEventListener('input', () => { set(type === 'number' ? num(i.value) : i.value); save(); });
+  w.appendChild(i);
+  return w;
+}
+function shell(title, n, onRemove, cls) {
+  const d = document.createElement('div'); d.className = cls || 'item';
+  const h = document.createElement('div'); h.className = 'item-head';
+  h.innerHTML = (n != null ? `<span class="n">${n}</span>` : '') + `<h3>${esc(title)}</h3>`;
+  if (onRemove) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'btn danger sm'; b.textContent = 'Remove';
+    b.addEventListener('click', onRemove); h.appendChild(b);
+  }
+  d.appendChild(h);
+  return d;
+}
+function grid(cls, ...kids) { const g = document.createElement('div'); g.className = cls; kids.forEach(k => g.appendChild(k)); return g; }
+function stringList(host, arr, placeholder) {
+  const redraw = () => {
+    host.innerHTML = '';
+    arr.forEach((v, i) => {
+      const row = document.createElement('div'); row.className = 'listrow';
+      const inp = document.createElement('input'); inp.type = 'text'; inp.value = v; inp.setAttribute('aria-label', placeholder);
+      inp.addEventListener('input', () => { arr[i] = inp.value; save(); });
+      const del = document.createElement('button'); del.type = 'button'; del.className = 'btn danger sm'; del.textContent = 'Remove';
+      del.addEventListener('click', () => { arr.splice(i, 1); redraw(); save(); });
+      row.append(inp, del); host.appendChild(row);
+    });
+    const add = document.createElement('div'); add.className = 'addrow';
+    const ni = document.createElement('input'); ni.type = 'text'; ni.placeholder = placeholder; ni.setAttribute('aria-label', placeholder);
+    const nb = document.createElement('button'); nb.type = 'button'; nb.className = 'btn dark sm'; nb.textContent = 'Add';
+    const commit = () => { if (!ni.value.trim()) return; arr.push(ni.value.trim()); redraw(); save(); host.querySelector('.addrow input').focus(); };
+    nb.addEventListener('click', commit);
+    ni.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); commit(); } });
+    add.append(ni, nb); host.appendChild(add);
+  };
+  redraw();
+}
+
+/* ---------- prices ---------- */
+function renderPrices() {
+  const host = $('#svcPriceEditor'); host.innerHTML = '';
+  Object.entries(data.pricing.services).forEach(([key, s]) => {
+    const name = (data.services.find(x => x.key === key) || {}).name || key;
+    const d = shell(name, null, null);
+    d.appendChild(field('Name shown on the quote', s.label, v => { s.label = v; }));
+    d.appendChild(grid('grid3',
+      field('Starting price ($)', s.base, v => { s.base = v; }, 'number', { min: 0, step: 1 }),
+      field('Per bedroom ($)', s.perBedroom, v => { s.perBedroom = v; }, 'number', { min: 0, step: 1 }),
+      field('Per bathroom ($)', s.perBathroom, v => { s.perBathroom = v; }, 'number', { min: 0, step: 1 })));
+    d.appendChild(grid('grid3',
+      field('Base time (hours)', s.baseHours, v => { s.baseHours = v; }, 'number', { min: 0, step: 0.25 }),
+      field('Per bedroom (hours)', s.hoursPerBedroom, v => { s.hoursPerBedroom = v; }, 'number', { min: 0, step: 0.05 }),
+      field('Per bathroom (hours)', s.hoursPerBathroom, v => { s.hoursPerBathroom = v; }, 'number', { min: 0, step: 0.05 })));
+    const ex = document.createElement('p'); ex.className = 'help'; ex.style.margin = '0';
+    const upd = () => { ex.textContent = `A 3 bedroom, 2 bathroom home comes to $${Math.round(s.base + 3 * s.perBedroom + 2 * s.perBathroom)} before any discount.`; };
+    upd(); d.addEventListener('input', upd); d.appendChild(ex);
+    host.appendChild(d);
+  });
+
+  const fh = $('#freqEditor'); fh.innerHTML = '';
+  data.pricing.frequencies.forEach(f => {
+    fh.appendChild(grid('grid2',
+      field('Name', f.label, v => { f.label = v; }),
+      field('Discount (%)', f.discount, v => { f.discount = v; }, 'number', { min: 0, max: 100, step: 1 })));
+  });
+
+  const eh = $('#extrasEditor'); eh.innerHTML = '';
+  data.pricing.extras.forEach((x, i) => {
+    const d = shell(x.label || 'New extra', i + 1, () => { data.pricing.extras.splice(i, 1); renderPrices(); save(); }, 'sub');
+    d.appendChild(field('Name', x.label, v => { x.label = v; }));
+    d.appendChild(grid('grid2',
+      field('Price ($)', x.price, v => { x.price = v; }, 'number', { min: 0, step: 1 }),
+      field('Extra time (hours)', x.hours, v => { x.hours = v; }, 'number', { min: 0, step: 0.25 })));
+    const inc = document.createElement('div');
+    inc.innerHTML = '<span class="lab">Free as part of</span>';
+    x.includedIn = x.includedIn || [];
+    Object.keys(data.pricing.services).forEach(k => {
+      const nm = (data.services.find(s => s.key === k) || {}).name || k;
+      const l = document.createElement('label'); l.className = 'chk';
+      const c = document.createElement('input'); c.type = 'checkbox'; c.checked = x.includedIn.includes(k);
+      c.addEventListener('change', () => {
+        x.includedIn = c.checked ? Array.from(new Set(x.includedIn.concat(k))) : x.includedIn.filter(y => y !== k);
+        save();
+      });
+      l.append(c, document.createTextNode(nm)); inc.appendChild(l);
+    });
+    d.appendChild(inc);
+    eh.appendChild(d);
+  });
+}
+$('#addExtra').addEventListener('click', () => {
+  data.pricing.extras.push({ key: 'extra-' + Date.now().toString(36), label: 'New extra', price: 30, hours: 0.5, includedIn: [] });
+  renderPrices(); save();
+});
+
+/* ---------- details ---------- */
+function renderHours() {
+  const c = $('#hoursEditor'); c.innerHTML = '';
+  data.hours.forEach(h => {
+    const row = document.createElement('div'); row.className = 'hoursrow';
+    row.innerHTML = `<div style="font-weight:650;padding-bottom:.6rem">${esc(h.day)}</div>`;
+    const o = field('Opens', h.open, v => { h.open = v; }, 'time');
+    const cl = field('Closes', h.close, v => { h.close = v; }, 'time');
+    const ck = document.createElement('label'); ck.className = 'chk'; ck.style.paddingBottom = '.6rem';
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!h.closed;
+    const sync = () => { $('input', o).disabled = cb.checked; $('input', cl).disabled = cb.checked; };
+    cb.addEventListener('change', () => { h.closed = cb.checked; sync(); save(); });
+    ck.append(cb, document.createTextNode('Closed'));
+    row.append(o, cl, ck); sync(); c.appendChild(row);
+  });
+}
+
+/* ---------- home ---------- */
+function renderHome() {
+  const s = $('#statsEditor'); s.innerHTML = '';
+  data.hero.stats.forEach(st => s.appendChild(grid('grid2',
+    field('Bold part', st.value, v => { st.value = v; }),
+    field('Rest of the line', st.label, v => { st.label = v; }))));
+
+  const w = $('#worriesEditor'); w.innerHTML = '';
+  data.worries.forEach((q, i) => {
+    const d = shell(q.q || 'New question', i + 1, () => { data.worries.splice(i, 1); renderHome(); save(); }, 'sub');
+    d.appendChild(field('Question', q.q, v => { q.q = v; }));
+    d.appendChild(field('Answer', q.a, v => { q.a = v; }, 'area'));
+    w.appendChild(d);
+  });
+
+  const st = $('#stepsEditor'); st.innerHTML = '';
+  data.steps.forEach((p, i) => {
+    const d = shell('Step ' + (i + 1), null, null, 'sub');
+    d.appendChild(field('Title', p.title, v => { p.title = v; }));
+    d.appendChild(field('Description', p.text, v => { p.text = v; }, 'area'));
+    st.appendChild(d);
+  });
+
+  const g = $('#guaranteesEditor'); g.innerHTML = '';
+  data.guarantees.forEach(p => {
+    const d = document.createElement('div'); d.className = 'sub';
+    d.appendChild(field('Title', p.title, v => { p.title = v; }));
+    d.appendChild(field('Description', p.text, v => { p.text = v; }, 'area'));
+    g.appendChild(d);
+  });
+}
+$('#addWorry').addEventListener('click', () => { data.worries.push({ q: '', a: '' }); renderHome(); save(); });
+
+/* ---------- kinds of clean ---------- */
+function renderServices() {
+  const c = $('#servicesEditor'); c.innerHTML = '';
+  data.services.forEach(s => {
+    const d = shell(s.name, null, null);
+    d.appendChild(grid('grid2', field('Name', s.name, v => { s.name = v; }), field('One-line summary', s.tagline, v => { s.tagline = v; })));
+    d.appendChild(field('Who it suits', s.for, v => { s.for = v; }, 'area'));
+    d.appendChild(field('How long it takes', s.time, v => { s.time = v; }));
+    const l = document.createElement('div'); l.innerHTML = '<span class="lab">What\u2019s included</span>';
+    const host = document.createElement('div'); l.appendChild(host); d.appendChild(l);
+    stringList(host, s.points, 'Add something that\u2019s included');
+    c.appendChild(d);
+  });
+}
+
+/* ---------- rooms ---------- */
+function renderRooms() {
+  const c = $('#roomsEditor'); c.innerHTML = '';
+  const levels = [['regular', 'Every clean'], ['deep', 'Added in a deep clean'], ['endOfLease', 'Added in an end of lease clean']];
+  data.rooms.forEach(r => {
+    const d = shell(r.name, null, null);
+    d.appendChild(field('Room name', r.name, v => { r.name = v; }));
+    levels.forEach(([k, label]) => {
+      r[k] = r[k] || [];
+      const box = document.createElement('div'); box.className = 'sub';
+      box.innerHTML = `<span class="lab">${esc(label)}</span>`;
+      const host = document.createElement('div'); box.appendChild(host);
+      stringList(host, r[k], 'Add a task');
+      d.appendChild(box);
+    });
+    c.appendChild(d);
+  });
+}
+
+/* ---------- team ---------- */
+function renderTeam() {
+  const c = $('#teamEditor'); c.innerHTML = '';
+  data.team.forEach((m, i) => {
+    const d = shell(m.name || 'New cleaner', i + 1, () => { data.team.splice(i, 1); renderTeam(); save(); });
+    d.appendChild(grid('grid3',
+      field('Name', m.name, v => { m.name = v; }),
+      field('Initials', m.initials, v => { m.initials = v.toUpperCase().slice(0, 3); }),
+      field('With you since', m.since, v => { m.since = v; })));
+    d.appendChild(field('Languages', m.languages, v => { m.languages = v; }));
+    d.appendChild(field('Something about them', m.loves, v => { m.loves = v; }, 'area'));
+    c.appendChild(d);
+  });
+}
+$('#addMate').addEventListener('click', () => { data.team.push({ name: '', initials: '', since: String(new Date().getFullYear()), languages: 'English', loves: '' }); renderTeam(); save(); });
+
+/* ---------- trust ---------- */
+function renderTrust() {
+  const p = $('#pillarsEditor'); p.innerHTML = '';
+  data.pillars.forEach((x, i) => {
+    const d = shell(i === 0 ? 'Shown large' : (x.title || 'New reason'), i + 1, () => { data.pillars.splice(i, 1); renderTrust(); save(); }, 'sub');
+    d.appendChild(field('Title', x.title, v => { x.title = v; }));
+    d.appendChild(field('Description', x.text, v => { x.text = v; }, 'area'));
+    p.appendChild(d);
+  });
+  stringList($('#dontEditor'), data.dontDo, 'Add something you don\u2019t do');
+}
+$('#addPillar').addEventListener('click', () => { data.pillars.push({ title: '', text: '' }); renderTrust(); save(); });
+
+/* ---------- reviews ---------- */
+function renderReviews() {
+  const c = $('#reviewsEditor'); c.innerHTML = '';
+  data.reviews.forEach((r, i) => {
+    const d = shell(r.name || 'New review', i + 1, () => { data.reviews.splice(i, 1); renderReviews(); save(); });
+    d.appendChild(field('What they wrote', r.text, v => { r.text = v; }, 'area'));
+    d.appendChild(grid('grid3',
+      field('Their name', r.name, v => { r.name = v; }),
+      field('Suburb', r.suburb, v => { r.suburb = v; }),
+      field('Kind of clean', r.service, v => { r.service = v; })));
+    c.appendChild(d);
+  });
+}
+$('#addReview').addEventListener('click', () => { data.reviews.push({ stars: 5, text: '', name: '', suburb: '', service: '' }); renderReviews(); save(); });
+
+/* ---------- faq ---------- */
+function renderFaq() {
+  const c = $('#faqEditor'); c.innerHTML = '';
+  data.faq.forEach((f, i) => {
+    const d = shell(f.q || 'New question', i + 1, () => { data.faq.splice(i, 1); renderFaq(); save(); });
+    d.appendChild(field('Question', f.q, v => { f.q = v; }));
+    d.appendChild(field('Answer', f.a, v => { f.a = v; }, 'area'));
+    c.appendChild(d);
+  });
+}
+$('#addFaq').addEventListener('click', () => { data.faq.push({ q: '', a: '' }); renderFaq(); save(); });
+
+function renderAll() {
+  renderPrices(); renderHours(); stringList($('#suburbsEditor'), data.suburbs, 'Add a suburb');
+  renderHome(); renderServices(); renderRooms(); renderTeam(); renderTrust(); renderReviews(); renderFaq();
+}
+
+/* ---------- download / reset ---------- */
+$('#download').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'content.json'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+$('#reset').addEventListener('click', () => {
+  $('#modalBox').innerHTML = '<h2>Undo all your changes?</h2><p>This clears everything you\u2019ve changed on this device and goes back to what\u2019s on the live site now.</p><div class="actions"><button class="btn danger" id="yesReset" type="button">Undo my changes</button><button class="btn dark" id="noReset" type="button">Keep my changes</button></div>';
+  $('#modal').classList.add('on');
+  $('#yesReset').addEventListener('click', () => {
+    try { localStorage.removeItem(STORE); } catch (e) { /* ignore */ }
+    data = clone(original); bindFields(); renderAll(); closeModal(); refreshPrev();
+  });
+  $('#noReset').addEventListener('click', closeModal);
+});
+function closeModal() { $('#modal').classList.remove('on'); }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ---------- publish: the customer never sees GitHub ---------- */
+$('#doPublish').addEventListener('click', () => {
+  const st = $('#pubStatus'), btn = $('#doPublish');
+  st.textContent = ''; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Publishing';
+  fetch('/.netlify/functions/publish', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ passcode: PASSCODE, content: data })
+  })
+    .then(r => r.json().then(j => ({ ok: r.ok, body: j })))
+    .then(res => {
+      btn.disabled = false; btn.textContent = 'Publish now';
+      if (res.ok && res.body.ok) {
+        st.innerHTML = '<span class="ok">Published. The live site updates in about a minute.</span>';
+        original = clone(data);
+      } else {
+        st.innerHTML = `<span class="bad">${esc(res.body.error || 'The publish service returned an error.')}</span><br>Use Download content.json below and send the file to your web person instead.`;
+      }
+    })
+    .catch(() => {
+      btn.disabled = false; btn.textContent = 'Publish now';
+      st.innerHTML = '<span class="bad">The publish service couldn\u2019t be reached.</span><br>Use Download content.json below and send the file to your web person instead.';
+    });
+});
+})();
+</script>
+</body>
+</html>
