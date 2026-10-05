@@ -529,15 +529,13 @@ function pricing() {
     const lines = [];
     fd.forEach((v, k) => { if (k !== 'botcheck' && v) lines.push(`${k}: ${v}`); });
     if (SITE.formKey) {
-      fd.append('access_key', SITE.formKey);
-      fd.append('subject', `Quote request: ${fd.get('Business')}`);
-      fd.append('from_name', 'Freehold website');
-      fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
-        .then(r => r.json()).then(j => (j.success ? done() : fail())).catch(fail);
-    } else {
-      location.href = `mailto:${SITE.email}?subject=${encodeURIComponent('Quote request: ' + fd.get('Business'))}&body=${encodeURIComponent(lines.join('\n'))}`;
-      setTimeout(done, 800);
-    }
+   fd.set('form-name', 'quote');
+fd.set('subject', `Quote request: ${fd.get('Business')}`);
+fetch('/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams(fd).toString()
+}).then(r => (r.ok ? done() : fail())).catch(fail);
   });
 }
 
