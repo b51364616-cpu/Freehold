@@ -101,7 +101,7 @@
     <h2 class="split">Get a quote.</h2>
     <p class="lede rise" style="margin-top:1.2rem">Tell me about your business. I'll come back with a fixed price, usually within a day.</p>
     <div class="sheet rise">
-      <form id="quoteForm" novalidate>
+      <form id="quoteForm" name="quote" method="POST" data-netlify="true" data-netlify-honeypot="botcheck" novalidate>
         <fieldset class="fset">
           <legend>About you</legend>
           <div class="row">
@@ -110,7 +110,7 @@
           </div>
           <div class="row">
             <div class="fld"><label for="fPhone">Phone</label><input id="fPhone" name="Phone" type="tel" autocomplete="tel" placeholder="0412 345 678"></div>
-            <div class="fld"><label for="fEmail">Email</label><input id="fEmail" name="Email" type="email" autocomplete="email" placeholder="jess@carterplumbing.com.au"></div>
+            <div class="fld"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email" placeholder="jess@carterplumbing.com.au"></div>
           </div>
           <div class="row">
             <div class="fld"><label for="fTrade">What you do</label><input id="fTrade" name="Trade" type="text" placeholder="Plumbing, mostly residential"></div>
