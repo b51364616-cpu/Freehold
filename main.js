@@ -528,14 +528,13 @@ function pricing() {
     const fd = new FormData(form);
     const lines = [];
     fd.forEach((v, k) => { if (k !== 'botcheck' && v) lines.push(`${k}: ${v}`); });
-    if (SITE.formKey) {
-   fd.set('form-name', 'quote');
-fd.set('subject', `Quote request: ${fd.get('Business')}`);
-fetch('/', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  body: new URLSearchParams(fd).toString()
-}).then(r => (r.ok ? done() : fail())).catch(fail);
+    fd.set('form-name', 'quote');
+    fd.set('subject', `Quote request: ${fd.get('Business')}`);
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(fd).toString()
+    }).then(r => (r.ok ? done() : fail())).catch(fail);
   });
 }
 
