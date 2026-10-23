@@ -1,0 +1,48 @@
+# Freehold — Netlify settings. Nothing to build; the site is served as-is.
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+
+# The demo businesses and phone numbers are made up, so keep them out of Google.
+[[headers]]
+  for = "/demos/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# The old mechanic and electrician demos were replaced by Kingpin and Tessera.
+# Anyone with an old link lands on the new demo instead of a missing page.
+[[redirects]]
+  from = "/demos/ironbark"
+  to = "https://kingpinauto.netlify.app/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/demos/ironbark/*"
+  to = "https://kingpinauto.netlify.app/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/demos/copperline"
+  to = "https://tesseratiling.netlify.app/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/demos/copperline/*"
+  to = "https://tesseratiling.netlify.app/"
+  status = 302
+  force = true

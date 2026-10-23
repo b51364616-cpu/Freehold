@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a clean — Hush Home Cleaning</title>
+<meta name="description" content="Book your home clean. We confirm by text and introduce your cleaner before they arrive.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%236A48C9' d='M16 3.5c5 6 9 10.9 9 15.6a9 9 0 0 1-18 0C7 14.4 11 9.5 16 3.5z'/%3E%3Cpath fill='%23F4DC5A' d='M16 13.2l1.2 3.4 3.4 1.2-3.4 1.2L16 22.4l-1.2-3.4-3.4-1.2 3.4-1.2z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..800;1,300..800&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-page="book">
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <a class="brand" href="index.html" aria-label="Hush Home Cleaning, home"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path class="drop" d="M16 3.5c5 6 9 10.9 9 15.6a9 9 0 0 1-18 0C7 14.4 11 9.5 16 3.5z"/><path class="spk" d="M16 13.2l1.2 3.4 3.4 1.2-3.4 1.2L16 22.4l-1.2-3.4-3.4-1.2 3.4-1.2z"/></svg><span data-bind="business.shortName">hush</span></a>
+  <nav class="links" aria-label="Main">
+    <a href="services.html">What we clean</a>
+    <a href="pricing.html">Prices</a>
+    <a href="about.html">Our cleaners</a>
+    <a href="book.html" aria-current="page"><span class="nav-ind"></span>Book</a>
+  </nav>
+  <a class="btn sm navcta" href="pricing.html">Get your price</a>
+  <button class="burger" type="button" aria-label="Open menu" aria-expanded="false"><span></span></button>
+</header>
+
+<main id="main">
+<section class="phero">
+  <div class="wrap">
+    <h1>Let's get you booked in.</h1>
+    <p class="lede">Tell us when suits and how we'll get in. We'll text to confirm the day and introduce your cleaner.</p>
+  </div>
+</section>
+
+<section class="sec flush-top">
+  <div class="wrap bookgrid">
+    <div>
+      <div class="qcard" id="qcard"></div>
+
+      <form id="bookForm" novalidate>
+        <fieldset class="fset">
+          <legend>About you</legend>
+          <div class="row">
+            <div class="fld"><label for="fName">Your name</label><input id="fName" name="Name" type="text" autocomplete="name" placeholder="Sam Taylor" required></div>
+            <div class="fld"><label for="fMobile">Mobile</label><input id="fMobile" name="Mobile" type="tel" autocomplete="tel" placeholder="0412 345 678" required></div>
+          </div>
+          <div class="row">
+            <div class="fld"><label for="fEmail">Email</label><input id="fEmail" name="Email" type="email" autocomplete="email" placeholder="sam@example.com"></div>
+            <div class="fld"><label for="fSuburb">Suburb</label><input id="fSuburb" name="Suburb" type="text" list="suburbList" autocomplete="address-level2" placeholder="West End" required><datalist id="suburbList"></datalist></div>
+          </div>
+          <div class="fld"><span class="label">Type of clean</span><div class="chips" id="gType"></div></div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>When suits?</legend>
+          <div class="fld"><span class="label">Days that work</span><div class="chips" id="gDays"></div></div>
+          <div class="fld"><span class="label">Time of day</span><div class="chips" id="gTime"></div></div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>Getting in</legend>
+          <div class="fld"><span class="label">How we'll get in</span><div class="chips" id="gAccess"></div></div>
+          <div class="fld"><span class="label">Anyone we'll meet?</span><div class="chips" id="gPets"></div></div>
+        </fieldset>
+
+        <fieldset class="fset">
+          <legend>Anything else?</legend>
+          <div class="fld"><label for="fNotes">Notes for your cleaner</label><textarea id="fNotes" name="Notes" placeholder="The spare room is my office, so please skip the desk. The side gate sticks."></textarea></div>
+        </fieldset>
+
+        <input type="hidden" name="Quote" id="fQuote" value="No quote built">
+        <input type="hidden" name="Preferred days" id="fDays" value="">
+        <input type="text" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <button class="btn" type="submit" id="submitBtn">Send booking request</button>
+        <p class="ferr" id="ferr" role="alert"></p>
+        <p class="fnote">No payment now. We'll ask for your address and a card when we confirm by text.</p>
+      </form>
+
+      <div class="done" id="done" role="status">
+        <svg class="burst" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l2.4 7.1 7.1 2.4-7.1 2.4L12 20.5l-2.4-7.1L2.5 11l7.1-2.4z"/></svg>
+        <h2>Request sent.</h2>
+        <p id="doneNote"></p>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="blk">
+        <h3>What happens next</h3>
+        <ol class="next">
+          <li>We text you to confirm a day and time.</li>
+          <li>We tell you who your cleaner is, with a photo.</li>
+          <li>They text when they arrive, and again when they've locked up.</li>
+        </ol>
+        <p style="margin-top:.8rem" id="responseNote"></p>
+      </div>
+      <div class="blk"><h3>Talk to a person</h3><div id="contact"></div></div>
+      <div class="blk"><h3>Office hours</h3><div class="hours" id="hours"></div></div>
+      <div class="blk"><h3>Where we clean</h3><div class="areas" id="areas"></div></div>
+    </aside>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap narrow">
+    <h2>Questions before you book.</h2>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot" id="foot"></footer>
+<script src="site.js"></script>
+</body>
+</html>
